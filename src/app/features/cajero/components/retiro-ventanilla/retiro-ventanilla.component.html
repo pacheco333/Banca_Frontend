@@ -1,0 +1,126 @@
+<div class="flex-1 p-8 bg-gray-50 min-h-screen">
+  <!-- Título de la sección -->
+  <div class="mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">Retiro por Ventanilla</h2>
+    <p class="text-sm text-gray-500 mt-1">Complete la información del cliente para retirar por ventanilla</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="bg-white rounded-lg shadow-sm p-6 max-w-3xl">
+    <form [formGroup]="retiroForm" (ngSubmit)="onAperturarCuenta()">
+      
+      <!-- Número de Cuenta -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Número de Cuenta <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          formControlName="numeroCuenta"
+          placeholder="0000-000-00000"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+        />
+        <p class="text-xs text-red-500 mt-1" 
+           *ngIf="retiroForm.get('numeroCuenta')?.touched && retiroForm.get('numeroCuenta')?.hasError('required')">
+          El número de cuenta es requerido
+        </p>
+        <p class="text-xs text-red-500 mt-1" 
+           *ngIf="retiroForm.get('numeroCuenta')?.touched && retiroForm.get('numeroCuenta')?.hasError('pattern')">
+          Formato inválido (0000-000-00000)
+        </p>
+      </div>
+
+      <!-- Número de Documento y Titular -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <!-- Número de Documento -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Número de Documento <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            formControlName="numeroDocumento"
+            placeholder="Ingrese el número"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          />
+          <p class="text-xs text-red-500 mt-1" 
+             *ngIf="retiroForm.get('numeroDocumento')?.touched && retiroForm.get('numeroDocumento')?.hasError('required')">
+            El número de documento es requerido
+          </p>
+        </div>
+
+        <!-- Titular -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Titular <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            formControlName="titular"
+            placeholder="Nombres y apellidos completos"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          />
+          <p class="text-xs text-red-500 mt-1" 
+             *ngIf="retiroForm.get('titular')?.touched && retiroForm.get('titular')?.hasError('required')">
+            El titular es requerido
+          </p>
+        </div>
+      </div>
+
+      <!-- Saldo Disponible y Monto a Retirar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <!-- Saldo Disponible -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Saldo Disponible
+          </label>
+          <input 
+            type="text" 
+            formControlName="saldoDisponible"
+            placeholder="$0000"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed text-gray-600"
+          />
+        </div>
+
+        <!-- Monto a Retirar -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Monto a Retirar <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="number" 
+            formControlName="montoRetirar"
+            placeholder="$0000"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          />
+          <p class="text-xs text-red-500 mt-1" 
+             *ngIf="retiroForm.get('montoRetirar')?.touched && retiroForm.get('montoRetirar')?.hasError('required')">
+            El monto a retirar es requerido
+          </p>
+          <p class="text-xs text-red-500 mt-1" 
+             *ngIf="retiroForm.get('montoRetirar')?.touched && retiroForm.get('montoRetirar')?.hasError('min')">
+            El monto debe ser mayor a 0
+          </p>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex gap-3 mt-8">
+        <button 
+          type="submit"
+          [disabled]="retiroForm.invalid"
+          class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          Aperturar Cuenta
+        </button>
+        <button 
+          type="button"
+          (click)="onCancelar()"
+          class="bg-gray-500 text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-600 transition-colors"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
