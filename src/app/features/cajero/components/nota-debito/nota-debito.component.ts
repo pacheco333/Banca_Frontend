@@ -2,26 +2,27 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RetiroService } from '../../services/retiro.service';
+import { NotaDebitoService } from '../../services/nota-debito.service';
 
 @Component({
-  selector: 'app-retiro-ventanilla',
+  selector: 'app-nota-debito',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './retiro-ventanilla.component.html',
-  styleUrls: ['./retiro-ventanilla.component.css']
+  templateUrl: './nota-debito.component.html',
+  styleUrls: ['./nota-debito.component.css']
 })
-export class RetiroVentanillaComponent {
-  retiroForm: FormGroup;
+export class NotaDebitoComponent {
+  notaDebitoForm: FormGroup;
   cuentaEncontrada = false;
   idCuenta: number = 0;
-  retiroRealizado = false;
+  notaDebitoRealizada = false;
 
   datosComprobante = {
     idTransaccion: 0,
     numeroCuenta: '',
     numeroDocumento: '',
     titular: '',
-    montoRetirado: 0,
+    valor: 0,
     saldoAnterior: 0,
     saldoNuevo: 0,
     fecha: new Date()
@@ -29,35 +30,35 @@ export class RetiroVentanillaComponent {
 
   constructor(
     private fb: FormBuilder,
-    private retiroService: RetiroService  // ← Inyectar el service
+    private retiroService: RetiroService,          // ← Para buscar cuenta
+    private notaDebitoService: NotaDebitoService   // ← Para aplicar nota débito
   ) {
-    this.retiroForm = this.fb.group({
+    this.notaDebitoForm = this.fb.group({
       numeroCuenta: ['', [Validators.required]],
       numeroDocumento: [''],
       titular: [''],
-      saldoDisponible: [''],
-      montoRetirar: ['', [Validators.required, Validators.min(1)]]
+      valor: ['', [Validators.required, Validators.min(1)]]
     });
   }
 
   buscarCuenta() {
-    const numeroCuenta = this.retiroForm.get('numeroCuenta')?.value;
+    const numeroCuenta = this.notaDebitoForm.get('numeroCuenta')?.value;
 
     if (!numeroCuenta) {
       alert('Por favor ingrese un número de cuenta');
       return;
     }
 
+    // Reutilizar el servicio de retiro para buscar cuenta
     this.retiroService.buscarCuenta({ numeroCuenta }).subscribe({
       next: (response) => {
         if (response.existe && response.datos) {
           this.cuentaEncontrada = true;
           this.idCuenta = response.datos.idCuenta;
 
-          this.retiroForm.patchValue({
+          this.notaDebitoForm.patchValue({
             numeroDocumento: response.datos.numeroDocumento,
-            titular: response.datos.titular,
-            saldoDisponible: `$${response.datos.saldo.toLocaleString()}`
+            titular: response.datos.titular
           });
 
           alert(response.mensaje);
@@ -74,47 +75,47 @@ export class RetiroVentanillaComponent {
     });
   }
 
-  onRetirar() {
-    if (this.retiroForm.invalid || !this.cuentaEncontrada) {
+  onAplicarNotaDebito() {
+    if (this.notaDebitoForm.invalid || !this.cuentaEncontrada) {
       alert('Por favor complete todos los campos requeridos');
       return;
     }
 
-    const numeroDocumento = this.retiroForm.get('numeroDocumento')?.value;
-    const montoRetirar = this.retiroForm.get('montoRetirar')?.value;
-    const numeroCuenta = this.retiroForm.get('numeroCuenta')?.value;
-    const titular = this.retiroForm.get('titular')?.value;
+    const numeroDocumento = this.notaDebitoForm.get('numeroDocumento')?.value;
+    const valor = this.notaDebitoForm.get('valor')?.value;
+    const numeroCuenta = this.notaDebitoForm.get('numeroCuenta')?.value;
+    const titular = this.notaDebitoForm.get('titular')?.value;
 
-    const datosRetiro = {
+    const datosNotaDebito = {
       idCuenta: this.idCuenta,
       numeroDocumento: numeroDocumento,
-      montoRetirar: parseFloat(montoRetirar)
+      valor: parseFloat(valor)
     };
 
-    this.retiroService.procesarRetiro(datosRetiro).subscribe({
+    this.notaDebitoService.aplicarNotaDebito(datosNotaDebito).subscribe({
       next: (response) => {
         if (response.exito && response.datos) {
-          alert(`${response.mensaje}\n\nSaldo anterior: $${response.datos.saldoAnterior.toLocaleString()}\nMonto retirado: $${response.datos.montoRetirado.toLocaleString()}\nSaldo nuevo: $${response.datos.saldoNuevo.toLocaleString()}`);
+          alert(`${response.mensaje}\n\nSaldo anterior: $${response.datos.saldoAnterior.toLocaleString()}\nValor debitado: $${response.datos.valor.toLocaleString()}\nSaldo nuevo: $${response.datos.saldoNuevo.toLocaleString()}`);
 
           this.datosComprobante = {
             idTransaccion: response.datos.idTransaccion,
             numeroCuenta: numeroCuenta,
             numeroDocumento: numeroDocumento,
             titular: titular,
-            montoRetirado: response.datos.montoRetirado,
+            valor: response.datos.valor,
             saldoAnterior: response.datos.saldoAnterior,
             saldoNuevo: response.datos.saldoNuevo,
             fecha: new Date(response.datos.fechaTransaccion)
           };
 
-          this.retiroRealizado = true;
+          this.notaDebitoRealizada = true;
         } else {
           alert(response.mensaje);
         }
       },
       error: (error) => {
-        console.error('Error al procesar retiro:', error);
-        alert('Error al procesar el retiro. Intente nuevamente.');
+        console.error('Error al aplicar nota débito:', error);
+        alert('Error al aplicar la nota débito. Intente nuevamente.');
       }
     });
   }
@@ -124,24 +125,23 @@ export class RetiroVentanillaComponent {
   }
 
   limpiarFormulario() {
-    this.retiroForm.reset();
+    this.notaDebitoForm.reset();
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
-    this.retiroRealizado = false;
+    this.notaDebitoRealizada = false;
   }
 
   limpiarDatosCuenta() {
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
-    this.retiroForm.patchValue({
+    this.notaDebitoForm.patchValue({
       numeroDocumento: '',
-      titular: '',
-      saldoDisponible: ''
+      titular: ''
     });
   }
 
   onCancelar() {
-    this.retiroForm.reset();
+    this.notaDebitoForm.reset();
     this.limpiarDatosCuenta();
   }
 }

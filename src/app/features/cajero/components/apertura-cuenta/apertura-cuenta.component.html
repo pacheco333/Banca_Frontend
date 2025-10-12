@@ -51,8 +51,9 @@
     <!-- Botones responsive: vertical en móvil, horizontal en tablet+ -->
     <div class="flex flex-col sm:flex-row gap-2 md:gap-3 mt-4 md:mt-6">
       <button (click)="imprimirComprobante()"
-        class="flex-1 px-4 md:px-6 py-2 md:py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors text-sm md:text-base">
-        🖨️ Imprimir Comprobante
+        class="flex-1 px-4 md:px-6 py-2 md:py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors text-sm md:text-base flex items-center justify-center">
+        <span class="material-icons">print</span>
+        <span class="ml-2">Imprimir Comprobante</span>
       </button>
       <button (click)="limpiarFormulario()"
         class="flex-1 px-4 md:px-6 py-2 md:py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-500 font-medium transition-colors text-sm md:text-base">

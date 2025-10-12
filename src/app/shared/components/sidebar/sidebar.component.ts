@@ -14,6 +14,7 @@ export interface MenuItem {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
+
 export class SidebarComponent {
   @Input() menuItems: MenuItem[] = [];
   menuAbierto = true;

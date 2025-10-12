@@ -1,5 +1,4 @@
 @media print {
-  /* Ocultar todo excepto el comprobante */
   body * {
     visibility: hidden;
   }
@@ -16,7 +15,6 @@
     width: 100%;
   }
 
-  /* Ocultar botones al imprimir */
   button {
     display: none !important;
   }

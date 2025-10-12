@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AperturaService, VerificarClienteResponse, AperturarCuentaResponse } from '../../../../core/services/apertura.service';
+import { AperturaService, VerificarClienteResponse, AperturarCuentaResponse } from '../../services/apertura.service';
 
 @Component({
   selector: 'app-apertura-cuenta',
