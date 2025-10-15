@@ -13,8 +13,8 @@ export const ASESOR_ROUTES: Routes = [
       },
       { 
         path: 'apertura', 
-        loadComponent: () => import('./components/apertura-cuenta/apertura-cuenta.component')
-          .then(m => m.AperturaCuentaComponent)
+        loadComponent: () => import('./components/consultar-cliente/consultar-cliente.component')
+          .then(m => m.ConsultarClienteComponent)
       }
       // Aquí agregarás más rutas después
     ]
