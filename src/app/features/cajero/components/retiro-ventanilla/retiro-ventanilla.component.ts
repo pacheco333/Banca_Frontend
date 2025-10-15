@@ -9,7 +9,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   templateUrl: './retiro-ventanilla.component.html',
   styleUrls: ['./retiro-ventanilla.component.css']
 })
-export class RetiroVentanillaComponent {
+export class RetiroVentanilla {
   retiroForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
