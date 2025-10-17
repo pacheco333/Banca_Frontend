@@ -4,8 +4,12 @@ import { roleGuard } from './core/guards/role.guard';
 export const routes: Routes = [
       {
     path: '',
-    redirectTo: '/cajero',
+    redirectTo: '/asesor',
     pathMatch: 'full'
+  },
+   {
+    path: 'asesor',
+    loadChildren: () => import('./features/asesor/asesor.routes').then(m => m.ASESOR_ROUTES)
   },
   {
     path: 'cajero',
@@ -13,5 +17,6 @@ export const routes: Routes = [
     canActivate: [roleGuard],
     data: { role: 'cajero' }
   }
+
   // Aquí agregarás asesor y admin después
 ];
