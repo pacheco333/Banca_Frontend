@@ -1,9 +1,12 @@
 <!-- Botón hamburguesa SOLO en pantallas pequeñas -->
+<!-- Botón hamburguesa SOLO en pantallas pequeñas -->
 <button
   *ngIf="isSmallScreen"
   (click)="toggleSidebar()"
   [ngStyle]="{'left': sidebarVisible ? '232px' : '12px'}"
-  class="fixed top-3 z-50 bg-blue-900 text-white p-2 rounded-lg shadow-xl hover:bg-blue-800 transition-all duration-300 active:scale-95">
+  class="fixed top-3 z-50 bg-blue-900 text-white p-2 rounded-lg shadow-xl hover:bg-blue-800 transition-all duration-300 active:scale-95"
+  title="Alternar Menú" 
+  [attr.aria-label]="sidebarVisible ? 'Cerrar menú' : 'Abrir menú'">
   <svg *ngIf="!sidebarVisible" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
   </svg>
@@ -11,6 +14,7 @@
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
   </svg>
 </button>
+
 
 <!-- Overlay SOLO en pantallas pequeñas cuando está abierto -->
 <div
@@ -51,7 +55,7 @@
 
       <nav
         class="overflow-hidden transition-all duration-300 ease-in-out"
-        [style.max-height]="menuAbierto ? '500px' : '0px'">
+        [style.maxHeight]="menuAbierto ? '500px' : '0px'">
         <div class="space-y-1 mt-2">
           <a
             *ngFor="let item of menu.items"

@@ -4,7 +4,7 @@ import { roleGuard } from './core/guards/role.guard';
 export const routes: Routes = [
       {
     path: '',
-    redirectTo: '/asesor',
+    redirectTo: 'asesor',
     pathMatch: 'full'
   },
    {
