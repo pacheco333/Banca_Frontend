@@ -1,14 +1,17 @@
 <!-- Formulario de búsqueda -->
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 w-full max-w-lg mx-auto p-6">
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 w-full max-w-lg p-6 mb-6">
   <h2 class="text-lg md:text-xl font-bold text-blue-900 mb-3">Consultar Cliente</h2>
-  <p class="text-sm text-gray-600 mb-5">Ingrese el número de documento del cliente que desea consultar.</p>
+  <p class="text-sm text-gray-600 mb-3">Ingrese el número de documento del cliente que desea consultar.</p>
 
+  <hr class="border-t border-gray-300 mt-1 mb-10" />
+
+  <p class="text-sm text-blue-900 mb-3">cedula del cleinte *.</p>
   <div class="flex flex-col sm:flex-row gap-3">
     <input
       type="text"
       [(ngModel)]="numeroDocumento"
-      placeholder="Número de documento"
-      class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      placeholder="Eje: 111456789"
+      class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
     />
 
     <button
