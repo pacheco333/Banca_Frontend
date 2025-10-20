@@ -1,80 +1,93 @@
-<!-- Formulario de búsqueda -->
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 w-full max-w-lg p-6 mb-6">
-  <h2 class="text-lg md:text-xl font-bold text-blue-900 mb-3">Consultar Cliente</h2>
-  <p class="text-sm text-gray-600 mb-3">Ingrese el número de documento del cliente que desea consultar.</p>
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
+  <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">
+    Consultar Cliente
+  </h2>
 
-  <hr class="border-t border-gray-300 mt-1 mb-10" />
-
-  <p class="text-sm text-blue-900 mb-3">cedula del cleinte *.</p>
-  <div class="flex flex-col sm:flex-row gap-3">
+  <!-- Input de búsqueda -->
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
     <input
       type="text"
       [(ngModel)]="numeroDocumento"
-      placeholder="Eje: 111456789"
-      class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
+      placeholder="Ingrese número de documento"
+      class="w-full sm:w-2/3 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
     />
-
     <button
       (click)="buscarCliente()"
-      class="px-6 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-      [disabled]="buscando"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition-all"
     >
-      <span *ngIf="!buscando">Buscar</span>
-      <span *ngIf="buscando" class="animate-pulse">Buscando...</span>
+      Buscar
+    </button>
+    <button
+      (click)="limpiar()"
+      class="bg-gray-400 hover:bg-gray-500 text-white font-semibold px-5 py-2 rounded-lg transition-all"
+    >
+      Limpiar
     </button>
   </div>
 
-  <p *ngIf="mensaje" class="text-sm text-gray-700 mt-4">{{ mensaje }}</p>
+  <!-- Mensaje -->
+  <div *ngIf="mensaje" class="text-center mb-4">
+    <p
+      [ngClass]="{
+        'text-green-600 font-semibold': cliente,
+        'text-red-600 font-semibold': !cliente
+      }"
+    >
+      {{ mensaje }}
+    </p>
+  </div>
 
-  <!-- Tarjeta con la información del cliente -->
-  <div *ngIf="cliente" class="mt-5 bg-blue-50 border border-blue-200 rounded-xl p-4">
-    <h3 class="text-lg font-bold text-blue-900 mb-3">Información del Cliente</h3>
+  <!-- Loader -->
+  <div *ngIf="buscando" class="text-center text-gray-600">
+    <p>Buscando cliente...</p>
+  </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <!-- Resultado del cliente -->
+  <div *ngIf="cliente" class="mt-6 border-t pt-6">
+    <h3 class="text-xl font-semibold text-blue-700 mb-4">
+      Información del Cliente
+    </h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
       <div>
-        <p class="text-xs text-gray-500">Nombre Completo:</p>
-        <p class="font-medium text-gray-800">{{ cliente.nombreCompleto }}</p>
+        <span class="font-semibold">Tipo Documento:</span>
+        <p>{{ cliente.tipo_documento }}</p>
       </div>
 
       <div>
-        <p class="text-xs text-gray-500">Documento:</p>
-        <p class="font-medium text-gray-800">{{ cliente.tipoDocumento }} {{ cliente.numeroDocumento }}</p>
+        <span class="font-semibold">Número Documento:</span>
+        <p>{{ cliente.numero_documento }}</p>
+      </div>
+7u
+      <div>
+        <span class="font-semibold">Nombre Completo:</span>
+        <p>{{ cliente.nombre_completo }}</p>
       </div>
 
       <div>
-        <p class="text-xs text-gray-500">Teléfono:</p>
-        <p class="font-medium text-gray-800">{{ cliente.telefono }}</p>
+        <span class="font-semibold">Estado Civil:</span>
+        <p>{{ cliente.estado_civil }}</p>
       </div>
 
       <div>
-        <p class="text-xs text-gray-500">Correo:</p>
-        <p class="font-medium text-gray-800">{{ cliente.correo }}</p>
+        <span class="font-semibold">Género:</span>
+        <p>{{ cliente.genero }}</p>
       </div>
 
-      <div class="sm:col-span-2">
-        <p class="text-xs text-gray-500">Dirección:</p>
-        <p class="font-medium text-gray-800">{{ cliente.direccion }}</p>
+      <div>
+        <span class="font-semibold">Fecha de Nacimiento:</span>
+        <p>{{ cliente.fecha_nacimiento | date: 'longDate' }}</p>
       </div>
 
-      <div class="sm:col-span-2">
-        <p class="text-xs text-gray-500">Estado:</p>
-        <p class="font-semibold"
-           [ngClass]="{
-             'text-green-700': cliente.estado === 'Activo',
-             'text-red-700': cliente.estado === 'Inactivo'
-           }">
-          {{ cliente.estado }}
-        </p>
+      <div>
+        <span class="font-semibold">Profesión:</span>
+        <p>{{ cliente.profesion }}</p>
       </div>
-    </div>
 
-    <div class="mt-5 flex justify-end">
-      <button
-        (click)="limpiar()"
-        class="px-5 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors text-sm"
-      >
-        Nueva Consulta
-      </button>
+      <div>
+        <span class="font-semibold">Ocupación:</span>
+        <p>{{ cliente.ocupacion }}</p>
+      </div>
     </div>
   </div>
 </div>
