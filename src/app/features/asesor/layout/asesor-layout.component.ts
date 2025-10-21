@@ -8,7 +8,7 @@ import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.com
   standalone: true,
   imports: [RouterOutlet, SidebarComponent, HeaderComponent],
   template: `
-    <div class="flex min-h-screen bg-gray-100 overflow-hidden">
+    <div class="flex h-screen bg-gray-100 overflow-hidden">
       <!-- Sidebar -->
       <app-sidebar [menuItems]="asesorMenuItems"></app-sidebar>
 
