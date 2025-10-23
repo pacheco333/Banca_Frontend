@@ -17,6 +17,13 @@ export const ASESOR_ROUTES: Routes = [
           import('./components/consultar-cliente/consultar-cliente.component').then(
             (m) => m.ConsultarClienteComponent
           ),
+      },
+      {
+        path: 'registrar-cliente',
+        loadComponent: () =>
+          import('./components/registrar-cliente/registrar-cliente.component').then(
+            (m) => m.RegistrarClienteComponent
+          ),
       }
     ]
   }

@@ -13,4 +13,9 @@ export class AsesorService {
   buscarCliente(numeroDocumento: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/asesor/cliente/${numeroDocumento}`);
   }
+  // Método para registrar cliente
+  registrarCliente(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/registrar-cliente`, payload);
+  }
+
 }
