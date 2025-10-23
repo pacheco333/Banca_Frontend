@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-export type UserRole = 'cajero' | 'asesor' | 'admin' | null;
+export type UserRole = 'cajero' | 'asesor' | 'admin' | 'director-operativo' |  null;
 
 export interface User {
   nombre: string;
@@ -20,7 +20,7 @@ export class AuthService {
     // Simular usuario cajero por defecto
     this.setCurrentUser({
       nombre: 'María González',
-      rol: 'cajero',
+      rol: 'director-operativo',
       iniciales: 'MG'
     });
   }

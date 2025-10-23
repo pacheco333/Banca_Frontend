@@ -18,6 +18,9 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
     case 'cajero':
       router.navigate(['/cajero']);
       break;
+      case 'director-operativo':
+      router.navigate(['/director-operativo']);
+      break;
     case 'asesor':
       router.navigate(['/asesor']);
       break;

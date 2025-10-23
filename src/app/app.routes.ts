@@ -9,9 +9,19 @@ export const routes: Routes = [
   },
   {
     path: 'asesor',
-    loadChildren: () => import('./features/asesor/asesor.routes').then(m => m.ASESOR_ROUTES),
+    loadChildren: () =>
+      import('./features/asesor/asesor.routes').then(m => m.ASESOR_ROUTES),
     canActivate: [roleGuard],
-    data: { role: 'cajero' }
+    data: { role: 'asesor' }
+  },
+  {
+    path: 'director-operativo',
+    loadChildren: () =>
+      import('./features/director-operativo/director-operativo.routes').then(
+        m => m.DIRECTOR_OPERATIVO_ROUTES
+      ),
+    canActivate: [roleGuard],
+    data: { role: 'director-operativo' }
   }
-  // Aquí agregarás asesor y admin después
+
 ];
