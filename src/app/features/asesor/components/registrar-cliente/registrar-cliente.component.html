@@ -1,59 +1,37 @@
-<mat-tab-group [(selectedIndex)]="activeTabIndex" class="tabs">
-  <!-- TAB 1: Información Personal -->
-  <mat-tab label="Información Personal">
-    <div class="tab-content">
-      <h3>Información Personal</h3>
-      <form #personalForm="ngForm">
-        <input type="text" placeholder="Primer nombre" [(ngModel)]="formData.infoPersonal.primer_nombre" name="primer_nombre">
-        <input type="text" placeholder="Segundo nombre" [(ngModel)]="formData.infoPersonal.segundo_nombre" name="segundo_nombre">
-        <input type="text" placeholder="Primer apellido" [(ngModel)]="formData.infoPersonal.primer_apellido" name="primer_apellido">
-        <input type="text" placeholder="Segundo apellido" [(ngModel)]="formData.infoPersonal.segundo_apellido" name="segundo_apellido">
-      </form>
-      <button mat-raised-button color="primary" (click)="nextTab()">Siguiente</button>
-    </div>
-  </mat-tab>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form class="form-container" (ngSubmit)="registrarCliente()">
+  <!-- Sección: Información Personal -->
+  <section class="form-section">
+    <h3>Información Personal</h3>
+    <!-- <app-info-personal [datosPersonales]="datosPersonales"></app-info-personal> -->
+  </section>
 
-  <!-- TAB 2: Contacto Personal -->
-  <mat-tab label="Contacto Personal">
-    <div class="tab-content">
-      <h3>Contacto Personal</h3>
-      <form #contactoForm="ngForm">
-        <input type="text" placeholder="Dirección" [(ngModel)]="formData.contactoPersonal.direccion" name="direccion">
-        <input type="text" placeholder="Teléfono" [(ngModel)]="formData.contactoPersonal.telefono" name="telefono">
-        <input type="email" placeholder="Correo" [(ngModel)]="formData.contactoPersonal.correo" name="correo">
-      </form>
-      <button mat-raised-button color="accent" (click)="prevTab()">Atrás</button>
-      <button mat-raised-button color="primary" (click)="nextTab()">Siguiente</button>
-    </div>
-  </mat-tab>
+  <!-- Sección: Contacto Personal -->
+  <section class="form-section">
+    <h3>Contacto Personal</h3>
+    <app-contacto-personal [datosContacto]="datosContacto"></app-contacto-personal>
+  </section>
 
-  <!-- TAB 3: Información Laboral -->
-  <mat-tab label="Información Laboral">
-    <div class="tab-content">
-      <h3>Información Laboral</h3>
-      <form #laboralForm="ngForm">
-        <input type="text" placeholder="Nombre de empresa" [(ngModel)]="formData.infoLaboral.nombre_empresa" name="nombre_empresa">
-        <input type="text" placeholder="Profesión" [(ngModel)]="formData.infoLaboral.profesion" name="profesion">
-      </form>
-      <button mat-raised-button color="accent" (click)="prevTab()">Atrás</button>
-      <button mat-raised-button color="primary" (click)="nextTab()">Siguiente</button>
-    </div>
-  </mat-tab>
+  <!-- Sección: Información Laboral -->
+  <section class="form-section">
+    <h3>Información Laboral</h3>
+    <app-informacion-laboral [datosLaborales]="datosLaborales"></app-informacion-laboral>
+  </section>
 
-  <!-- TAB 4: FACTA y CRS -->
-  <mat-tab label="FACTA y CRS">
-    <div class="tab-content">
-      <h3>FACTA y CRS</h3>
-      <form #factaForm="ngForm">
-        <label>¿Es residente extranjero?</label>
-        <select [(ngModel)]="formData.factaCrs.es_residente_extranjero" name="residente">
-          <option value="Sí">Sí</option>
-          <option value="No">No</option>
-        </select>
-        <input *ngIf="formData.factaCrs.es_residente_extranjero === 'Sí'" type="text" placeholder="País" [(ngModel)]="formData.factaCrs.pais" name="pais">
-      </form>
-      <button mat-raised-button color="accent" (click)="prevTab()">Atrás</button>
-      <button mat-raised-button color="primary" (click)="guardarCliente()">Guardar</button>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+  <!-- Botón de acción -->
+  <div class="form-actions">
+    <button type="submit" class="btn-registrar">
+      Registrar Cliente
+    </button>
+  </div>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="section info-laboral">
+  <h3>Información Laboral</h3>
+
+  <div class="form-group">
+    <label for="ocupacion">Ocupación:</label>
+    <input
+      id="ocupacion"
+      type="text"
+      [(ngModel)]="datosLaborales.ocupacion"
+      name="ocupacion"
+      placeholder="Ej. Ingeniero de software"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="ingresos">Ingresos Mensuales:</label>
+    <input
+      id="ingresos"
+      type="number"
+      [(ngModel)]="datosLaborales.ingresos"
+      name="ingresos"
+      placeholder="Ej. 3000000"
+      required
+      min="0"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="empresa">Empresa:</label>
+    <input
+      id="empresa"
+      type="text"
+      [(ngModel)]="datosLaborales.empresa"
+      name="empresa"
+      placeholder="Ej. Tech Solutions S.A."
+      required
+    />
+  </div>
+</div>
+
+</body>
+</html>

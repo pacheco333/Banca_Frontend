@@ -1,24 +1,63 @@
-.tabs {
-  width: 90%;
-  margin: 0 auto;
+.form-container {
+  max-width: 850px;
+  margin: auto;
   background: #fff;
-  border-radius: 10px;
-  padding: 1.5rem;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.tab-content {
+.tabs {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.tabs button {
+  background: #e7e7e7;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #2e5bff;
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 0.5rem;
 }
 
 input, select {
-  padding: 0.6rem;
+  padding: 0.5rem;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  border-radius: 6px;
   width: 100%;
 }
 
-button {
-  align-self: flex-end;
+.btn-next, .btn-save {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-next {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-save {
+  background-color: #0dbf00;
+  color: white;
 }
