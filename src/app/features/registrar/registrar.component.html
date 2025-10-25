@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Banca Uno</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex items-center justify-center min-h-screen bg-white p-5 font-['Roboto']">
+
+  <div class="flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-5xl min-h-[600px]">
+
+    <!-- Panel Izquierdo -->
+    <div
+      class="flex-1 bg-gradient-to-b from-[#0a4d68] via-[#088395] to-[#37b34a] flex flex-col justify-center items-center text-center text-white p-10">
+      <div class="w-28 h-28 mb-10">
+        <div
+          class="w-full h-full bg-white/20 rounded-full flex items-center justify-center shadow-lg p-6 backdrop-blur-sm">
+          <img src="../isotipo_simulabank.png" alt="Logo Banca Uno" class="w-full h-full object-contain drop-shadow-md">
+        </div>
+      </div>
+
+      <h1 class="text-4xl font-bold mb-3">¡Únete!</h1>
+      <p class="text-lg opacity-90 mb-10">Crea tu cuenta y comienza a aprender sobre el mundo bancario</p>
+
+      <div class="w-full max-w-xs text-left space-y-4">
+        <div class="flex items-center">
+          <div
+            class="w-7 h-7 rounded-full bg-white/30 flex items-center justify-center font-bold text-sm mr-4">1</div>
+          <span>Experiencia educativa completa</span>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-7 h-7 rounded-full bg-white/30 flex items-center justify-center font-bold text-sm mr-4">2</div>
+          <span>Practica operaciones reales</span>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-7 h-7 rounded-full bg-white/30 flex items-center justify-center font-bold text-sm mr-4">3</div>
+          <span>Seguimiento de progreso</span>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-7 h-7 rounded-full bg-white/30 flex items-center justify-center font-bold text-sm mr-4">4</div>
+          <span>Certificación de aprendizaje</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Derecho -->
+    <div class="flex-1 flex flex-col justify-center p-10">
+
+      <div class="mb-10">
+        <h2 class="text-3xl font-semibold text-[#0a4d68] mb-2">Crear Cuenta</h2>
+        <p class="text-sm text-gray-500">Completa tus datos para registrarte en el sistema</p>
+      </div>
+
+      <form id="registerForm" class="space-y-5">
+        <!-- Nombre -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Nombre Completo <span
+              class="text-red-600">*</span></label>
+          <input type="text" id="fullName" name="nombre" placeholder="Juan Carlos Pérez González"
+            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 placeholder:text-gray-400">
+          <span class="hidden text-xs text-red-500 mt-1">Ingrese su nombre completo</span>
+        </div>
+
+        <!-- Correo -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Correo <span
+              class="text-red-600">*</span></label>
+          <input type="email" id="email" name="email" placeholder="Jucapeqo12@gmail.com"
+            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 placeholder:text-gray-400">
+          <span class="hidden text-xs text-red-500 mt-1">Ingrese un correo electrónico completo</span>
+        </div>
+
+        <!-- Contraseña -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña <span
+              class="text-red-600">*</span></label>
+          <input type="password" id="password" name="password" placeholder="Ingrese su Contraseña"
+            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 placeholder:text-gray-400">
+          <span class="hidden text-xs text-red-500 mt-1">Mínimo 8 caracteres</span>
+        </div>
+
+        <!-- Botones -->  
+        <button type="submit"
+          class="w-full py-3 rounded-xl bg-[#0c4a6e] text-white font-semibold text-base hover:bg-[#0a3a56] transition-all shadow-md hover:-translate-y-0.5">
+          Registrar
+        </button>
+
+        <a href="/src/app/features/login/login.component.html"
+          class="block w-full py-3 border-2 border-[#0c4a6e] rounded-xl text-center font-semibold text-[#0c4a6e] hover:bg-slate-50 transition">
+          Volver al inicio
+        </a>
+
+        <p class="text-center text-xs text-gray-500 mt-5">
+          Al registrarte, aceptas los términos y condiciones del sistema de simulación.
+        </p>
+      </form>
+
+      <div class="text-center text-xs text-gray-400 mt-10 border-t pt-5">
+        Banca Uno - Sistema de Simulación v1.0.0<br>
+        © 2025 Todos los derechos reservados
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

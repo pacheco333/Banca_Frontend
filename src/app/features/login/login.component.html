@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Banca Uno</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex items-center justify-center min-h-screen bg-white p-6 font-['Roboto']">
+
+  <div class="flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-5xl min-h-[600px]">
+
+    <!-- Panel Izquierdo -->
+    <div
+      class="flex-1 bg-gradient-to-b from-[#0a4d68] via-[#088395] to-[#37b34a] text-white flex flex-col items-center justify-center text-center p-10">
+      <div class="w-28 h-28 mb-10">
+        <div class="w-full h-full bg-white/20 rounded-full flex items-center justify-center shadow-lg p-6">
+          <img src="../isotipo_simulabank.png" alt="Logo Banca Uno" class="w-full h-full object-contain drop-shadow-md">
+        </div>
+      </div>
+
+      <h1 class="text-4xl font-bold mb-3">Banca Uno</h1>
+      <p class="text-lg opacity-90 mb-10">Aprende el sistema bancario de manera práctica e interactiva</p>
+
+      <div class="w-full max-w-xs text-left space-y-4">
+        <div class="flex items-center">
+          <div class="w-7 h-7 bg-white/30 rounded-full flex items-center justify-center mr-4 font-semibold">✓</div>
+          <span>Simulación bancaria realista</span>
+        </div>
+        <div class="flex items-center">
+          <div class="w-7 h-7 bg-white/30 rounded-full flex items-center justify-center mr-4 font-semibold">✓</div>
+          <span>Múltiples roles de usuario</span>
+        </div>
+        <div class="flex items-center">
+          <div class="w-7 h-7 bg-white/30 rounded-full flex items-center justify-center mr-4 font-semibold">✓</div>
+          <span>Transacciones seguras</span>
+        </div>
+        <div class="flex items-center">
+          <div class="w-7 h-7 bg-white/30 rounded-full flex items-center justify-center mr-4 font-semibold">✓</div>
+          <span>Entorno de aprendizaje</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Derecho -->
+    <div class="flex-1 flex flex-col justify-center p-10">
+
+      <h2 class="text-3xl font-semibold text-[#0a4d68] mb-2">Iniciar Sesión</h2>
+      <p class="text-sm text-gray-500 mb-6">Accede a tu cuenta del sistema de simulación</p>
+
+      <!-- Mensaje de éxito -->
+      <div id="successMessage" class="hidden bg-green-500 text-white p-3 rounded-lg mb-5 text-center">
+        ¡Inicio de sesión exitoso!
+      </div>
+
+      <form id="loginForm" class="space-y-5">
+
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span
+              class="text-red-600">*</span></label>
+          <input type="email" id="email" name="email" required placeholder="Ingrese su correo electrónico"
+            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 placeholder:text-gray-400">
+          <p id="emailError" class="hidden text-xs text-red-500 mt-1">Ingrese un correo electrónico válido</p>
+        </div>
+
+        <!-- Contraseña -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña <span
+              class="text-red-600">*</span></label>
+          <input type="password" id="password" name="password" required placeholder="Ingrese su contraseña"
+            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 placeholder:text-gray-400">
+          <p class="text-xs text-gray-400 mt-1">Mínimo 8 caracteres</p>
+          <p id="passwordError" class="hidden text-xs text-red-500 mt-1">La contraseña es requerida</p>
+        </div>
+
+        <!-- Rol -->
+        <div>
+          <label for="rol" class="block text-sm font-medium text-gray-700 mb-1">Rol de Usuario <span
+              class="text-red-600">*</span></label>
+          <select id="rol" name="rol" required
+            class="w-full border-2 border-gray-200 rounded-xl px-3 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400">
+            <option value="" disabled selected>Seleccione su rol</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Cajero">Cajero</option>
+            <option value="Cliente">Cliente</option>
+          </select>
+        </div>
+
+        <!-- Recordar sesión -->
+        <div class="flex items-center">
+          <input type="checkbox" id="remember" name="remember"
+            class="w-4 h-4 text-sky-600 border-gray-300 rounded focus:ring-sky-400">
+          <label for="remember" class="ml-2 text-sm text-gray-600">Recordar mi sesión</label>
+        </div>
+
+        <!-- Botón -->
+        <button type="submit"
+          class="w-full py-3 rounded-xl bg-[#0c4a6e] text-white font-semibold text-base hover:bg-[#0a3a56] transition-all shadow-md hover:-translate-y-0.5">
+          Iniciar Sesión
+        </button>
+        <div class="text-[#088395] hover:underline cursor-pointer mb-2 text-center -mt-[10px]">
+          ¿Olvidaste tu contraseña?
+        </div>
+
+        <!-- Enlaces inferiores -->
+        <div class="text-center text-sm mt-[30px]">
+          <div class="text-gray-400 mb-2">¿No tienes una cuenta?</div>
+          <a href="#crear-cuenta" class="text-[#088395] font-semibold hover:underline">
+            Crear cuenta nueva
+          </a>
+        </div>
+
+
+        <!-- Footer -->
+        <div class="text-center text-xs text-gray-400 mt-8 border-t pt-5">
+          Banca Uno - Sistema de Simulación v1.0.0<br>
+          © 2025 Todos los derechos reservados
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
