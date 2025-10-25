@@ -15,7 +15,7 @@ export class AsesorService {
   }
   // Método para registrar cliente
   registrarCliente(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/registrar-cliente`, payload);
+    return this.http.post<any>(`${this.apiUrl}/asesor/registrar-cliente`, payload);
   }
 
 }

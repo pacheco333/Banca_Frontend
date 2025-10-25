@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+ import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -9,6 +9,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   templateUrl: './informacion-personal.component.html',
 })
 export class InformacionPersonalComponent implements OnInit {
+  @Input() datosPersonales: any; // 👈 agrega esto
   @Output() formReady = new EventEmitter<FormGroup>();
   form!: FormGroup;
 

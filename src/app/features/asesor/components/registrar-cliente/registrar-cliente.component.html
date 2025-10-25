@@ -1,37 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
   <form class="form-container" (ngSubmit)="registrarCliente()">
-  <!-- Sección: Información Personal -->
-  <section class="form-section">
-    <h3>Información Personal</h3>
-    <!-- <app-info-personal [datosPersonales]="datosPersonales"></app-info-personal> -->
-  </section>
+  <mat-tab-group>
+    <mat-tab label="Información Personal">
+      <app-informacion-personal [datosPersonales]="datosPersonales"></app-informacion-personal>
+    </mat-tab>
 
-  <!-- Sección: Contacto Personal -->
-  <section class="form-section">
-    <h3>Contacto Personal</h3>
-    <app-contacto-personal [datosContacto]="datosContacto"></app-contacto-personal>
-  </section>
+    <mat-tab label="Contacto Personal">
+      <app-contacto-personal [datosContacto]="datosContacto"></app-contacto-personal>
+    </mat-tab>
 
-  <!-- Sección: Información Laboral -->
-  <section class="form-section">
-    <h3>Información Laboral</h3>
-    <app-informacion-laboral [datosLaborales]="datosLaborales"></app-informacion-laboral>
-  </section>
+    <mat-tab label="Información Laboral">
+      <app-informacion-laboral [datosLaborales]="datosLaborales"></app-informacion-laboral>
+    </mat-tab>
 
-  <!-- Botón de acción -->
+    <mat-tab label="FACTA y CRS">
+    <app-informacion-factac [datosFactac]="datosFactac"></app-informacion-factac>
+    </mat-tab>
+  </mat-tab-group>
+
   <div class="form-actions">
-    <button type="submit" class="btn-registrar">
-      Registrar Cliente
-    </button>
+    <button type="submit" class="btn-registrar">Registrar Cliente</button>
   </div>
 </form>
 
+  <!-- <form class="form-container" (ngSubmit)="registrarCliente()">
+    Sección: Información Personal
+    <section class="form-section">
+      <h3>Información Personal</h3>
+      <app-informacion-personal [datosPersonales]="datosPersonales"></app-informacion-personal>
+
+    </section>
+
+    Sección: Contacto Personal
+    <section class="form-section">
+      <h3>Contacto Personal</h3>
+      <app-contacto-personal [datosContacto]="datosContacto"></app-contacto-personal>
+    </section>
+
+    Sección: Información Laboral
+    <section class="form-section">
+      <h3>Información Laboral</h3>
+      <app-informacion-laboral [datosLaborales]="datosLaborales"></app-informacion-laboral>
+    </section>
+
+    Botón de acción
+    <div class="form-actions">
+      <button type="submit" class="btn-registrar">
+        Registrar Cliente
+      </button>
+    </div>
+  </form> -->
+
 </body>
+
 </html>

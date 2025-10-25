@@ -10,5 +10,10 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./informacion-laboral.component.css'],
 })
 export class InformacionLaboralComponent {
-  @Input() datosLaborales: any;
+  @Input() datosLaborales: any= {
+    ocupacion: '',
+    ingresos: null,
+    empresa: ''
+  };
+  
 }

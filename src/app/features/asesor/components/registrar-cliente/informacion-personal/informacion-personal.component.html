@@ -1,22 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div class="section">
+<div class="section">
   <h3>Información Personal</h3>
 
   <form [formGroup]="form" novalidate>
     <div class="form-group">
       <label for="tipo_documento">Tipo de Documento:</label>
-      <select
-        id="tipo_documento"
-        name="tipo_documento"
-        formControlName="tipo_documento"
-      >
+      <select id="tipo_documento" formControlName="tipo_documento">
         <option value="">Seleccione una opción</option>
         <option value="CC">Cédula de Ciudadanía</option>
         <option value="TI">Tarjeta de Identidad</option>
@@ -28,7 +16,6 @@
       <label for="numero_documento">Número de Documento:</label>
       <input
         id="numero_documento"
-        name="numero_documento"
         type="text"
         formControlName="numero_documento"
         placeholder="Ingrese su número de documento"
@@ -39,7 +26,6 @@
       <label for="primer_nombre">Primer Nombre:</label>
       <input
         id="primer_nombre"
-        name="primer_nombre"
         type="text"
         formControlName="primer_nombre"
         placeholder="Ingrese su primer nombre"
@@ -50,7 +36,6 @@
       <label for="primer_apellido">Primer Apellido:</label>
       <input
         id="primer_apellido"
-        name="primer_apellido"
         type="text"
         formControlName="primer_apellido"
         placeholder="Ingrese su primer apellido"
@@ -59,7 +44,7 @@
 
     <div class="form-group">
       <label for="genero">Género:</label>
-      <select id="genero" name="genero" formControlName="genero">
+      <select id="genero" formControlName="genero">
         <option value="">Seleccione una opción</option>
         <option value="M">Masculino</option>
         <option value="F">Femenino</option>
@@ -67,6 +52,3 @@
     </div>
   </form>
 </div>
-
-</body>
-</html>
