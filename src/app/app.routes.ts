@@ -13,6 +13,6 @@ export const routes: Routes = [
     canActivate: [roleGuard],
     data: { role: 'cajero' }
   }
-  
+
   // Aquí agregarás asesor y admin después
 ];
