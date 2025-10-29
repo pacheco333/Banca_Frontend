@@ -16,19 +16,41 @@ export class SolicitarProductoComponent {
   comentario: string = '';
   archivoSeleccionado: string = '';
   archivoFile: File | null = null;
+  clienteEncontrado: boolean = false;
+  clienteNoEncontrado: boolean = false;
+  nombreCliente: string = '';
 
   constructor(private solicitudService: SolicitudService) {}
+
+  // Validar que solo se ingresen números
+  onCedulaInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    // Eliminar cualquier caracter que no sea número
+    this.cedula = value.replace(/[^0-9]/g, '');
+    // Actualizar el valor del input
+    input.value = this.cedula;
+  }
 
   buscarCliente(): void {
     if (this.cedula.trim()) {
       console.log('Buscando cliente con cédula:', this.cedula);
+      this.clienteEncontrado = false;
+      this.clienteNoEncontrado = false;
       this.solicitudService.buscarCliente(this.cedula).subscribe({
-        next: (cliente) => {
-          console.log('Cliente encontrado:', cliente);
-          alert(`Cliente encontrado: ${cliente.nombre} ${cliente.apellido}`);
+        next: (response) => {
+          console.log('Respuesta completa:', response);
+          console.log('Cliente encontrado:', response.data);
+          this.clienteEncontrado = true;
+          this.clienteNoEncontrado = false;
+          const cliente = response.data;
+          this.nombreCliente = `${cliente.primer_nombre || ''} ${cliente.primer_apellido || ''}`.trim() || 'Cliente';
         },
         error: (error) => {
           console.error('Error al buscar cliente:', error);
+          this.clienteEncontrado = false;
+          this.clienteNoEncontrado = true;
+          this.nombreCliente = '';
         }
       });
     } else {
@@ -82,5 +104,8 @@ export class SolicitarProductoComponent {
     this.comentario = '';
     this.archivoSeleccionado = '';
     this.archivoFile = null;
+    this.clienteEncontrado = false;
+    this.clienteNoEncontrado = false;
+    this.nombreCliente = '';
   }
 }
