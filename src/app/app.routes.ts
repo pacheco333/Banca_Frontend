@@ -4,15 +4,26 @@ import { roleGuard } from './core/guards/role.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/asesor',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./features/login/login.routes').then(m => m.LOGIN_ROUTES)
+  },
+  {
+    path: 'registro',
+    loadChildren: () =>
+      import('./features/registro/registro.routes').then(m => m.REGISTRO_ROUTES)
+  },
+  
   {
     path: 'asesor',
     loadChildren: () =>
       import('./features/asesor/asesor.routes').then(m => m.ASESOR_ROUTES),
     canActivate: [roleGuard],
-    data: { role: 'asesor' }
+    data: { role: 'Asesor' }
   },
   {
     path: 'director-operativo',
@@ -21,7 +32,11 @@ export const routes: Routes = [
         m => m.DIRECTOR_OPERATIVO_ROUTES
       ),
     canActivate: [roleGuard],
-    data: { role: 'director-operativo' }
+    data: { role: 'Director-operativo' }
+  },
+  
+  {
+    path: '**',
+    redirectTo: '/login'
   }
-
 ];

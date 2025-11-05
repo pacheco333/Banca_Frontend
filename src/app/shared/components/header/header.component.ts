@@ -17,8 +17,25 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
+  }
+
+  // Método para obtener las iniciales del usuario
+  get iniciales(): string {
+    if (!this.currentUser || !this.currentUser.nombre) return '';
+    const nombres = this.currentUser.nombre.trim().split(' ');
+    if (nombres.length >= 2) {
+      return (nombres[0][0] + nombres[nombres.length - 1][0]).toUpperCase();
+    }
+    return nombres[0][0].toUpperCase();
+  }
+
+  // Método para cerrar sesión
+  cerrarSesion(): void {
+    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+      this.authService.logout();
+    }
   }
 }
