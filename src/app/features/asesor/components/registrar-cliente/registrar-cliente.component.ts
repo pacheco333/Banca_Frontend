@@ -1,101 +1,204 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AsesorService } from '../../../asesor/services/asesor.service';
+
+// 🧩 Subcomponentes
 import { InformacionPersonalComponent } from './informacion-personal/informacion-personal.component';
 import { ContactoPersonalComponent } from './contacto-personal/contacto-personal.component';
 import { InformacionLaboralComponent } from './informacion-laboral/informacion-laboral.component';
-import { InformacionFactacComponent } from './informacion-factca/informacion-factac.component';
-import { AsesorService } from '../../services/asesor.service';
-import { MatTabsModule } from '@angular/material/tabs';
+import { InformacionFinancieraComponent } from './informacion-financiera/informacion-financiera.component';
+import { ActividadEconomicaComponent } from './actividad-economica/actividad-economica.component';
+import { FactaComponent } from './informacion-factca/informacion-factac.component';
 
 @Component({
   selector: 'app-registrar-cliente',
   standalone: true,
   imports: [
     CommonModule,
-    MatTabsModule,
-    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     InformacionPersonalComponent,
     ContactoPersonalComponent,
     InformacionLaboralComponent,
-    InformacionFactacComponent,
+    InformacionFinancieraComponent,
+    ActividadEconomicaComponent,
+    FactaComponent,
   ],
   templateUrl: './registrar-cliente.component.html',
-  styleUrls: ['./registrar-cliente.component.css'],
 })
 export class RegistrarClienteComponent {
-  datosPersonales = {
-    tipoDocumento: '',
-    numeroDocumento: '',
-    nombre: '',
-    apellido: '',
-    genero: '',
-    estadoCivil: '',
-    nacionalidad: '',
+  // 🌐 Control de pestañas
+  pestanaActiva: string = 'datos-personales';
+
+  // 🧠 Datos temporales de todos los subformularios
+  clienteData: any = {
+    datosPersonales: null,
+    contacto: null,
+    actividad: null,
+    laboral: null,
+    financiera: null,
+    facta: null,
   };
-  datosContacto = { telefono: '', email: '', direccion: '' };
-  datosLaborales = { ocupacion: '', ingresos: '', empresa: '' };
-  datosFactac = { ocupacion: '', ingresos: 0, empresa: '' };
 
-  constructor(private asesorService: AsesorService) {}
+  // Orden de las pestañas para moverse automáticamente
+  ordenPestanas = [
+    'datos-personales',
+    'contacto-personal',
+    'info-laboral',
+    'facta',
+  ];
 
+  constructor(private asesorService: AsesorService, private fb: FormBuilder) {}
+
+  // 🔁 Cambiar pestaña manualmente
+  cambiarPestana(nombre: string) {
+    this.pestanaActiva = nombre;
+  }
+
+  // ⏭️ Ir a la siguiente pestaña automáticamente
+  irASiguientePestanaActual() {
+    const indexActual = this.ordenPestanas.indexOf(this.pestanaActiva);
+    if (indexActual < this.ordenPestanas.length - 1) {
+      this.pestanaActiva = this.ordenPestanas[indexActual + 1];
+    }
+  }
+
+  // 📥 Recibir datos desde los subcomponentes
+  actualizarDatos(nombre: string, data: any) {
+    this.clienteData[nombre] = data;
+    this.asesorService.setClienteData?.(this.clienteData); // si tu servicio tiene método para sincronizar
+    console.log(`✅ Datos actualizados (${nombre}):`, data);
+  }
+
+  // 📩 Escuchar evento de "nextTab" desde los subcomponentes
+  manejarNextTab() {
+    this.irASiguientePestanaActual();
+  }
+
+  // ✅ Validar que todo esté diligenciado antes de registrar
+  datosCompletos(): boolean {
+    return Object.values(this.clienteData).every((seccion) => seccion && Object.keys(seccion).length > 0);
+  }
+
+  // 🚀 Registrar cliente en el backend
   registrarCliente() {
-    // Estructuramos el payload tal como lo espera el backend
+    if (!this.datosCompletos()) {
+      alert('⚠️ Debes completar todos los módulos antes de registrar el cliente.');
+      return;
+    }
+
     const payload = {
-      // Información personal
-      tipoDocumento: this.datosPersonales.tipoDocumento,
-      numeroDocumento: this.datosPersonales.numeroDocumento,
-      primerNombre: this.datosPersonales.nombre,
-      primerApellido: this.datosPersonales.apellido,
-      genero: this.datosPersonales.genero,
-      estadoCivil: this.datosPersonales.estadoCivil,
-      nacionalidad: this.datosPersonales.nacionalidad,
-
-      // Contacto personal
-      contacto: {
-        direccion: this.datosContacto.direccion,
-        telefono: this.datosContacto.telefono,
-        correo: this.datosContacto.email,
-      },
-
-      // Información laboral
-      laboral: {
-        nombreEmpresa: this.datosLaborales.empresa,
-        ingresos: this.datosLaborales.ingresos,
-        ocupacion: this.datosLaborales.ocupacion,
-      },
-
-      // FACTA / CRS (por ahora con valores por defecto)
-      facta: {
-        esResidenteExtranjero: false,
-        pais: 'Colombia',
-      },
+      ...this.clienteData.datosPersonales,
+      contacto: this.clienteData.contacto,
+      actividad: this.clienteData.actividad,
+      laboral: this.clienteData.laboral,
+      financiera: this.clienteData.financiera,
+      facta: this.clienteData.facta,
     };
 
-    // Llamada al servicio
+    console.log('📦 Enviando datos al backend:', payload);
+
     this.asesorService.registrarCliente(payload).subscribe({
       next: (res) => {
-        console.log('Respuesta del servidor:', res);
-        alert('✅ Cliente registrado correctamente');
+        console.log('✅ Cliente registrado con éxito:', res);
+        alert('Cliente registrado correctamente');
       },
-      error: (err: any) => {
+      error: (err) => {
         console.error('❌ Error al registrar cliente:', err);
-        alert('Ocurrió un error al registrar el cliente');
+        alert('Error al registrar el cliente');
       },
     });
   }
-
-  // registrarCliente() {
-  //   const nuevoCliente = {
-  //     ...this.datosPersonales,
-  //     ...this.datosContacto,
-  //     ...this.datosLaborales,
-  //     ...this.datosFactac
-  //   };
-
-  //   this.asesorService.registrarCliente(nuevoCliente).subscribe({
-  //     next: () => alert('Cliente registrado correctamente'),
-  //     error: (err) => console.error('Error al registrar cliente', err)
-  //   });
-  // }
 }
+
+
+// import { Component } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+// import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+// // 🧩 Importamos los subcomponentes
+// import { InformacionPersonalComponent } from './informacion-personal/informacion-personal.component';
+// import { ContactoPersonalComponent } from './contacto-personal/contacto-personal.component';
+// import { InformacionLaboralComponent } from './informacion-laboral/informacion-laboral.component';
+// import { InformacionFinancieraComponent } from './informacion-financiera/informacion-financiera.component';
+// import { ActividadEconomicaComponent } from './actividad-economica/actividad-economica.component';
+// import { FactaComponent } from './informacion-factca/informacion-factac.component';
+
+// @Component({
+//   selector: 'app-registrar-cliente',
+//   standalone: true,
+//   imports: [
+//     CommonModule,
+//     ReactiveFormsModule,
+//     HttpClientModule,
+//     InformacionPersonalComponent,
+//     ContactoPersonalComponent,
+//     InformacionLaboralComponent,
+//     InformacionFinancieraComponent,
+//     ActividadEconomicaComponent,
+//     FactaComponent,
+//   ],
+//   templateUrl: './registrar-cliente.component.html',
+// })
+// export class RegistrarClienteComponent {
+//   // 🧠 Formulario general
+//   clienteForm!: FormGroup;
+
+//   // 🧭 Control de pestañas
+//   activeTab: string = 'datos-personales';
+
+//   // 🌐 URL del backend
+//   private apiUrl = 'http://localhost:3000/api/asesor/registrar-cliente';
+
+//   constructor(private fb: FormBuilder, private http: HttpClient) {
+//     this.clienteForm = this.fb.group({
+//       datosPersonales: [],
+//       contactoPersonal: [],
+//       actividadEconomica: [],
+//       informacionLaboral: [],
+//       informacionFinanciera: [],
+//     });
+//   }
+
+//   /**
+//    * 🔄 Recibe datos desde los subcomponentes
+//    * y actualiza el formulario padre.
+//    */
+//   actualizarSubform(nombreSubform: string, formData: any) {
+//     this.clienteForm.patchValue({ [nombreSubform]: formData });
+//   }
+
+//   /**
+//    * 📑 Cambia la pestaña activa
+//    */
+//   cambiarTab(tab: string) {
+//     this.activeTab = tab;
+//   }
+
+//   /**
+//    * 🚀 Envía todos los datos combinados al backend.
+//    */
+//   onSubmit() {
+//     const data = {
+//       ...this.clienteForm.value.datosPersonales,
+//       contacto: this.clienteForm.value.contactoPersonal,
+//       actividad: this.clienteForm.value.actividadEconomica,
+//       laboral: this.clienteForm.value.informacionLaboral,
+//       financiera: this.clienteForm.value.informacionFinanciera,
+//     };
+
+//     this.http.post(this.apiUrl, data).subscribe({
+//       next: (response) => {
+//         console.log('✅ Cliente registrado correctamente:', response);
+//         alert('Cliente registrado con éxito');
+//       },
+//       error: (err) => {
+//         console.error('❌ Error al registrar cliente:', err);
+//         alert('Error al registrar el cliente');
+//       },
+//     });
+//   }
+// }

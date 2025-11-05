@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,68 +8,90 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './informacion-personal.component.html',
 })
-export class InformacionPersonalComponent implements OnInit {
-  @Input() datosPersonales: any = {};
-  @Output() datosPersonalesChange = new EventEmitter<any>();
+export class InformacionPersonalComponent {
 
-  form!: FormGroup;
+  form: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  // 📤 Emitir datos al padre solo cuando se presione "Guardar"
+  @Output() formChange = new EventEmitter<any>();
+  @Output() nextTab = new EventEmitter<void>();
 
-  ngOnInit() {
+  constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      tipoDocumento: [this.datosPersonales.tipoDocumento || '', Validators.required],
-      numeroDocumento: [this.datosPersonales.numeroDocumento || '', Validators.required],
-      nombre: [this.datosPersonales.nombre || '', Validators.required],
-      apellido: [this.datosPersonales.apellido || '', Validators.required],
-      genero: [this.datosPersonales.genero || '', Validators.required],
-      estadoCivil: [this.datosPersonales.estadoCivil || '', Validators.required],
-      nacionalidad: [this.datosPersonales.nacionalidad || '', Validators.required],
+      tipoDocumento: ['', Validators.required],
+      numeroDocumento: ['', [Validators.required, Validators.minLength(6)]],
+      lugarExpedicion: ['', Validators.required],
+      ciudadNacimiento: ['', Validators.required],
+      fechaNacimiento: ['', Validators.required],
+      fechaExpedicion: ['', Validators.required],
+      primerNombre: ['', Validators.required],
+      segundoNombre: [''],
+      primerApellido: ['', Validators.required],
+      segundoApellido: [''],
+      genero: ['', Validators.required],
+      nacionalidad: ['', Validators.required],
+      otraNacionalidad: [''],
+      estadoCivil: ['', Validators.required],
+      grupoEtnico: ['', Validators.required],
     });
+  }
 
-    // Emitir los cambios al padre cada vez que cambie algo en el formulario
-    this.form.valueChanges.subscribe(value => {
-      this.datosPersonalesChange.emit(value);
-    });
+  // ✅ Método manual para guardar (sin bucle de valueChanges)
+  guardarSeccion() {
+    if (this.form.valid) {
+      this.formChange.emit(this.form.value);
+      this.nextTab.emit();
+      console.log('✅ Datos personales guardados correctamente');
+    } else {
+      this.form.markAllAsTouched();
+      alert('Por favor completa todos los campos obligatorios.');
+    }
   }
 }
 
-//  import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+
+// import { Component, EventEmitter, Output } from '@angular/core';
 // import { CommonModule } from '@angular/common';
 // import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // @Component({
-//   selector: 'app-informacion-personal',
+//   selector: 'app-datos-personales',
 //   standalone: true,
 //   imports: [CommonModule, ReactiveFormsModule],
 //   templateUrl: './informacion-personal.component.html',
 // })
-// export class InformacionPersonalComponent implements OnInit {
-//   @Input() datosPersonales: any; // 👈 agrega esto
-//   @Output() formReady = new EventEmitter<FormGroup>();
-//   form!: FormGroup;
+// export class InformacionPersonalComponent {
+//   // 🧠 Formulario local de datos personales
+//   form: FormGroup;
 
-//   constructor(private fb: FormBuilder) {}
+//   // 📤 Emite cambios del formulario al padre (registrar-cliente)
+//   @Output() formChange = new EventEmitter<any>();
 
-//   ngOnInit() {
+//   constructor(private fb: FormBuilder) {
+//     // ✅ Inicialización del formulario con validaciones básicas
 //     this.form = this.fb.group({
-//       tipo_documento: ['', Validators.required],
-//       numero_documento: ['', Validators.required],
-//       lugar_expedicion: [''],
-//       ciudad_nacimiento: [''],
-//       fecha_nacimiento: ['', Validators.required],
-//       fecha_expedicion: [''],
-//       primer_nombre: ['', Validators.required],
-//       segundo_nombre: [''],
-//       primer_apellido: ['', Validators.required],
-//       segundo_apellido: [''],
+//       tipoDocumento: ['', Validators.required],
+//       numeroDocumento: ['', [Validators.required, Validators.minLength(5)]],
+//       lugarExpedicion: ['', Validators.required],
+//       ciudadNacimiento: ['', Validators.required],
+//       fechaNacimiento: ['', Validators.required],
+//       fechaExpedicion: ['', Validators.required],
+//       primerNombre: ['', Validators.required],
+//       segundoNombre: [''],
+//       primerApellido: ['', Validators.required],
+//       segundoApellido: [''],
 //       genero: ['', Validators.required],
 //       nacionalidad: ['', Validators.required],
-//       otra_nacionalidad: [''],
-//       estado_civil: ['', Validators.required],
-//       grupo_etnico: ['', Validators.required],
+//       otraNacionalidad: [''],
+//       estadoCivil: ['', Validators.required],
+//       grupoEtnico: [''],
 //     });
 
-//     this.formReady.emit(this.form);
+//     // 🔁 Escucha cada cambio del formulario y lo envía al padre automáticamente
+//     this.form.valueChanges.subscribe((val) => {
+//       if (this.form.valid) {
+//         this.formChange.emit(this.form.value);
+//       }
+//     });
 //   }
 // }

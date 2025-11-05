@@ -1,0 +1,70 @@
+<div class="bg-white shadow-md rounded-lg p-6 border border-gray-200 mt-8">
+  <h2 class="text-xl font-semibold text-blue-700 mb-4">
+    Información Financiera
+  </h2>
+
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <!-- Ingresos Mensuales -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Ingresos Mensuales</label>
+      <input
+        formControlName="ingresosMensuales"
+        type="number"
+        placeholder="Ej: 2500000"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('ingresosMensuales')?.touched && form.get('ingresosMensuales')?.invalid"
+         class="text-red-500 text-sm mt-1">Debe ser un número mayor o igual a 0</p>
+    </div>
+
+    <!-- Egresos Mensuales -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Egresos Mensuales</label>
+      <input
+        formControlName="egresosMensuales"
+        type="number"
+        placeholder="Ej: 1200000"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('egresosMensuales')?.touched && form.get('egresosMensuales')?.invalid"
+         class="text-red-500 text-sm mt-1">Debe ser un número mayor o igual a 0</p>
+    </div>
+
+    <!-- Total Activos -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Total Activos</label>
+      <input
+        formControlName="totalActivos"
+        type="number"
+        placeholder="Ej: 30000000"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('totalActivos')?.touched && form.get('totalActivos')?.invalid"
+         class="text-red-500 text-sm mt-1">Debe ser un número mayor o igual a 0</p>
+    </div>
+
+    <!-- Total Pasivos -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Total Pasivos</label>
+      <input
+        formControlName="totalPasivos"
+        type="number"
+        placeholder="Ej: 10000000"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('totalPasivos')?.touched && form.get('totalPasivos')?.invalid"
+         class="text-red-500 text-sm mt-1">Debe ser un número mayor o igual a 0</p>
+    </div>
+
+    
+     
+  </form>
+  <!-- Botón Guardar -->
+  <div class="mt-6 flex justify-end">
+    <button (click)="guardarSeccion()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow">
+      Guardar y Continuar
+    </button>
+  </div>
+</div>

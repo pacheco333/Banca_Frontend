@@ -1,115 +1,339 @@
-<div class="section">
-  <h3>Información Personal</h3>
+<div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+  <h2 class="text-xl font-semibold text-blue-700 mb-4">
+    Información Personal
+  </h2>
 
-  <form [formGroup]="form" novalidate>
-    <div class="form-group">
-      <label for="tipoDocumento">Tipo de Documento:</label>
-      <select id="tipoDocumento" formControlName="tipoDocumento">
-        <option value="">Seleccione una opción</option>
-        <option value="CC">Cédula de Ciudadanía</option>
-        <option value="TI">Tarjeta de Identidad</option>
-        <option value="Pasaporte">Pasaporte</option>
-      </select>
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <!-- Tipo Documento -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Tipo de Documento</label>
+
+      <div class="flex gap-4 mt-2">
+        <label class="flex items-center">
+          <input type="radio" formControlName="tipoDocumento" value="CC" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>CC</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="tipoDocumento" value="TI" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>TI</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="tipoDocumento" value="CE" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>CE</span>
+        </label>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="numeroDocumento">Número de Documento:</label>
-      <input
-        id="numeroDocumento"
-        type="text"
-        formControlName="numeroDocumento"
-        placeholder="Ingrese su número de documento"
-      />
+    <!-- Número Documento -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Número de Documento</label>
+      <input formControlName="numeroDocumento" type="text" placeholder="Ej: 1023456789"
+        class="w-full border rounded px-3 py-2" />
+      <p *ngIf="form.get('numeroDocumento')?.touched && form.get('numeroDocumento')?.invalid"
+        class="text-red-500 text-sm mt-1">Campo obligatorio (mínimo 6 dígitos)</p>
     </div>
 
-    <div class="form-group">
-      <label for="nombre">Primer Nombre:</label>
-      <input id="nombre" type="text" formControlName="nombre" placeholder="Ingrese su primer nombre" />
+    <!-- Lugar Expedición -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Lugar de Expedición</label>
+      <input formControlName="lugarExpedicion" type="text" placeholder="Ej: Bogotá"
+        class="w-full border rounded px-3 py-2" />
     </div>
 
-    <div class="form-group">
-      <label for="apellido">Primer Apellido:</label>
-      <input id="apellido" type="text" formControlName="apellido" placeholder="Ingrese su primer apellido" />
+    <!-- Ciudad Nacimiento -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Ciudad de Nacimiento</label>
+      <input formControlName="ciudadNacimiento" type="text" placeholder="Ej: Medellín"
+        class="w-full border rounded px-3 py-2" />
     </div>
 
-    <div class="form-group">
-      <label for="genero">Género:</label>
-      <select id="genero" formControlName="genero">
-        <option value="">Seleccione una opción</option>
-        <option value="M">Masculino</option>
-        <option value="F">Femenino</option>
-      </select>
+    <!-- Fecha Nacimiento -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Fecha de Nacimiento</label>
+      <input formControlName="fechaNacimiento" type="date" class="w-full border rounded px-3 py-2" />
+      <p *ngIf="form.get('fechaNacimiento')?.touched && form.get('fechaNacimiento')?.invalid"
+        class="text-red-500 text-sm mt-1">Selecciona una fecha válida</p>
     </div>
 
-    <div class="form-group">
-      <label for="estadoCivil">Estado Civil:</label>
-      <select id="estadoCivil" formControlName="estadoCivil">
-        <option value="">Seleccione una opción</option>
-        <option value="Soltero">Soltero</option>
-        <option value="Casado">Casado</option>
-        <option value="Unión libre">Unión libre</option>
-        <option value="Divorciado">Divorciado</option>
-      </select>
+    <!-- Fecha Expedición -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Fecha de Expedición</label>
+      <input formControlName="fechaExpedicion" type="date" class="w-full border rounded px-3 py-2" />
+      <p *ngIf="form.get('fechaExpedicion')?.touched && form.get('fechaExpedicion')?.invalid"
+        class="text-red-500 text-sm mt-1">Selecciona una fecha válida</p>
     </div>
 
-    <div class="form-group">
-      <label for="nacionalidad">Nacionalidad:</label>
-      <input id="nacionalidad" type="text" formControlName="nacionalidad" placeholder="Ej. Colombiana" />
+    <!-- Primer Nombre -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Primer Nombre</label>
+      <input formControlName="primerNombre" type="text" class="w-full border rounded px-3 py-2" />
     </div>
+
+    <!-- Segundo Nombre -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Segundo Nombre</label>
+      <input formControlName="segundoNombre" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Primer Apellido -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Primer Apellido</label>
+      <input formControlName="primerApellido" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Segundo Apellido -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Segundo Apellido</label>
+      <input formControlName="segundoApellido" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Género -->
+    <div>
+      <label class="block text-sm font-medium mb-2">Género</label>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <input type="radio" id="generoMasculino" formControlName="genero" value="M"
+            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+          <label for="generoMasculino" class="ml-2 text-sm">Masculino</label>
+        </div>
+        <div class="flex items-center">
+          <input type="radio" id="generoFemenino" formControlName="genero" value="F"
+            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+          <label for="generoFemenino" class="ml-2 text-sm">Femenino</label>
+        </div>
+      </div>
+    </div>
+    <!-- Nacionalidad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Nacionalidad</label>
+
+      <div class="flex flex-col gap-2 mt-2">
+        <label class="flex items-center">
+          <input type="radio" formControlName="nacionalidad" value="Colombiano" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Colombiano</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="nacionalidad" value="Estadounidense"
+            class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Estadounidense</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="nacionalidad" value="Otra" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Otra</span>
+        </label>
+      </div>
+    </div>
+    <!-- Otra Nacionalidad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Otra Nacionalidad</label>
+      <input formControlName="otraNacionalidad" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Estado Civil -->
+    <div>
+      <label class="block text-sm font-medium mb-2">Estado Civil</label>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <input type="radio" id="estadoCivilSoltero" formControlName="estadoCivil" value="Soltero"
+            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+          <label for="estadoCivilSoltero" class="ml-2 text-sm">Soltero</label>
+        </div>
+        <div class="flex items-center">
+          <input type="radio" id="estadoCivilCasado" formControlName="estadoCivil" value="Casado"
+            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+          <label for="estadoCivilCasado" class="ml-2 text-sm">Casado</label>
+        </div>
+        <div class="flex items-center">
+          <input type="radio" id="estadoCivilDivorciado" formControlName="estadoCivil" value="Divorciado"
+            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+          <label for="estadoCivilDivorciado" class="ml-2 text-sm">Divorciado</label>
+        </div>
+        <div class="flex items-center">
+          <input type="radio" id="estadoCivilViudo" formControlName="estadoCivil" value="Viudo"
+            class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+          <label for="estadoCivilViudo" class="ml-2 text-sm">Viudo</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grupo Étnico -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Grupo Étnico</label>
+
+      <div class="flex flex-col gap-2 mt-2">
+        <label class="flex items-center">
+          <input type="radio" formControlName="grupoEtnico" value="Indígena" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Indígena</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="grupoEtnico" value="Gitano" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Gitano</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="grupoEtnico" value="Raizal" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Raizal</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="grupoEtnico" value="Palenquero" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Palenquero</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="grupoEtnico" value="Afrocolombiano" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Afrocolombiano</span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="radio" formControlName="grupoEtnico" value="Ninguna" class="mr-2 w-4 h-4 accent-blue-600">
+          <span>Ninguna</span>
+        </label>
+      </div>
+    </div>
+
   </form>
+
+  <div class="mt-6 flex justify-end">
+    <button (click)="guardarSeccion()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow">
+      Guardar y Continuar
+    </button>
+  </div>
 </div>
 
-<!-- <div class="section">
-  <h3>Información Personal</h3>
 
-  <form [formGroup]="form" novalidate>
-    <div class="form-group">
-      <label for="tipo_documento">Tipo de Documento:</label>
-      <select id="tipo_documento" formControlName="tipo_documento">
-        <option value="">Seleccione una opción</option>
+<!-- <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+  <h2 class="text-xl font-semibold text-blue-700 mb-4">
+    Datos Personales
+  </h2>
+
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4"> -->
+
+<!-- Tipo de Documento -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Tipo de Documento</label>
+      <select formControlName="tipoDocumento" class="w-full border rounded px-3 py-2">
+        <option value="">Seleccione...</option>
         <option value="CC">Cédula de Ciudadanía</option>
+        <option value="CE">Cédula de Extranjería</option>
         <option value="TI">Tarjeta de Identidad</option>
-        <option value="Pasaporte">Pasaporte</option>
       </select>
-    </div>
+      <p *ngIf="form.get('tipoDocumento')?.touched && form.get('tipoDocumento')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div> -->
 
-    <div class="form-group">
-      <label for="numero_documento">Número de Documento:</label>
+<!-- Número de Documento -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Número de Documento</label>
       <input
-        id="numero_documento"
+        formControlName="numeroDocumento"
         type="text"
-        formControlName="numero_documento"
-        placeholder="Ingrese su número de documento"
+        class="w-full border rounded px-3 py-2"
+        placeholder="Ej: 1234567890"
       />
+      <p *ngIf="form.get('numeroDocumento')?.touched && form.get('numeroDocumento')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div> -->
+
+<!-- Lugar de expedición -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Lugar de Expedición</label>
+      <input formControlName="lugarExpedicion" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+<!-- Ciudad de nacimiento -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Ciudad de Nacimiento</label>
+      <input formControlName="ciudadNacimiento" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+<!-- Fechas -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Fecha de Nacimiento</label>
+      <input formControlName="fechaNacimiento" type="date" class="w-full border rounded px-3 py-2" />
     </div>
 
-    <div class="form-group">
-      <label for="primer_nombre">Primer Nombre:</label>
-      <input
-        id="primer_nombre"
-        type="text"
-        formControlName="primer_nombre"
-        placeholder="Ingrese su primer nombre"
-      />
+    <div>
+      <label class="block text-sm font-medium mb-1">Fecha de Expedición</label>
+      <input formControlName="fechaExpedicion" type="date" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+<!-- Nombres -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Primer Nombre</label>
+      <input formControlName="primerNombre" type="text" class="w-full border rounded px-3 py-2" />
     </div>
 
-    <div class="form-group">
-      <label for="primer_apellido">Primer Apellido:</label>
-      <input
-        id="primer_apellido"
-        type="text"
-        formControlName="primer_apellido"
-        placeholder="Ingrese su primer apellido"
-      />
+    <div>
+      <label class="block text-sm font-medium mb-1">Segundo Nombre</label>
+      <input formControlName="segundoNombre" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+<!-- Apellidos -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Primer Apellido</label>
+      <input formControlName="primerApellido" type="text" class="w-full border rounded px-3 py-2" />
     </div>
 
-    <div class="form-group">
-      <label for="genero">Género:</label>
-      <select id="genero" formControlName="genero">
-        <option value="">Seleccione una opción</option>
+    <div>
+      <label class="block text-sm font-medium mb-1">Segundo Apellido</label>
+      <input formControlName="segundoApellido" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+<!-- Género -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Género</label>
+      <select formControlName="genero" class="w-full border rounded px-3 py-2">
+        <option value="">Seleccione...</option>
         <option value="M">Masculino</option>
         <option value="F">Femenino</option>
+        <option value="O">Otro</option>
       </select>
-    </div>
+    </div> -->
+
+<!-- Nacionalidad -->
+<!-- <label class="block text-sm font-medium mb-1">Nacionalidad</label>
+    <select formControlName="nacionalidad" class="border rounded px-3 py-2 w-full">
+      <option value="">Seleccione...</option>
+      <option value="Colombiano">Colombiano</option>
+      <option value="Estadounidense">Estadounidense</option>
+      <option value="Otra">Otra</option>
+    </select> -->
+
+<!-- Otra nacionalidad -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Otra Nacionalidad</label>
+      <input formControlName="otraNacionalidad" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+<!-- Estado civil -->
+<!-- <div>
+      <label class="block text-sm font-medium mb-1">Estado Civil</label>
+      <select formControlName="estadoCivil" class="w-full border rounded px-3 py-2">
+        <option value="">Seleccione...</option>
+        <option value="Soltero">Soltero(a)</option>
+        <option value="Casado">Casado(a)</option>
+        <option value="Unión libre">Unión libre</option>
+        <option value="Divorciado">Divorciado(a)</option>
+      </select>
+    </div> -->
+
+<!-- Grupo étnico -->
+<!-- <label class="block text-sm font-medium mb-1">Grupo Étnico</label>
+<select formControlName="grupoEtnico" class="border rounded px-3 py-2 w-full">
+  <option value="">Seleccione...</option>
+  <option value="Indígena">Indígena</option>
+  <option value="Gitano">Gitano</option>
+  <option value="Raizal">Raizal</option>
+  <option value="Palenquero">Palenquero</option>
+  <option value="Afrocolombiano">Afrocolombiano</option>
+  <option value="Ninguno">Ninguno</option>
+</select>
   </form>
 </div> -->

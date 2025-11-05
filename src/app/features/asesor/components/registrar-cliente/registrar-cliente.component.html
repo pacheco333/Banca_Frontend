@@ -1,65 +1,207 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="p-6 max-w-5xl mx-auto">
+  <!-- 🧾 Título -->
+  <h1 class="text-3xl font-bold mb-8 text-center text-blue-700">
+    Registro de Cliente
+  </h1>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
+  <!-- 🧭 Navegación -->
+  <div class="flex flex-wrap justify-center mb-8 gap-3">
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="pestanaActiva === 'datos-personales'"
+      [class.text-white]="pestanaActiva === 'datos-personales'"
+      [class.bg-gray-100]="pestanaActiva !== 'datos-personales'"
+      (click)="cambiarPestana('datos-personales')"
+    >
+      Datos Personales
+    </button>
 
-<body>
-  <form class="form-container" (ngSubmit)="registrarCliente()">
-  <mat-tab-group>
-    <mat-tab label="Información Personal">
-      <app-informacion-personal [datosPersonales]="datosPersonales"></app-informacion-personal>
-    </mat-tab>
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="pestanaActiva === 'contacto-personal'"
+      [class.text-white]="pestanaActiva === 'contacto-personal'"
+      [class.bg-gray-100]="pestanaActiva !== 'contacto-personal'"
+      (click)="cambiarPestana('contacto-personal')"
+    >
+      Contacto y Actividad
+    </button>
 
-    <mat-tab label="Contacto Personal">
-      <app-contacto-personal [datosContacto]="datosContacto"></app-contacto-personal>
-    </mat-tab>
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="pestanaActiva === 'info-laboral'"
+      [class.text-white]="pestanaActiva === 'info-laboral'"
+      [class.bg-gray-100]="pestanaActiva !== 'info-laboral'"
+      (click)="cambiarPestana('info-laboral')"
+    >
+      Laboral y Financiera
+    </button>
 
-    <mat-tab label="Información Laboral">
-      <app-informacion-laboral [datosLaborales]="datosLaborales"></app-informacion-laboral>
-    </mat-tab>
-
-    <mat-tab label="FACTA y CRS">
-    <app-informacion-factac [datosFactac]="datosFactac"></app-informacion-factac>
-    </mat-tab>
-  </mat-tab-group>
-
-  <div class="form-actions">
-    <button type="submit" class="btn-registrar">Registrar Cliente</button>
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="pestanaActiva === 'facta'"
+      [class.text-white]="pestanaActiva === 'facta'"
+      [class.bg-gray-100]="pestanaActiva !== 'facta'"
+      (click)="cambiarPestana('facta')"
+    >
+      FACTA / CRS
+    </button>
   </div>
-</form>
 
-  <!-- <form class="form-container" (ngSubmit)="registrarCliente()">
-    Sección: Información Personal
-    <section class="form-section">
-      <h3>Información Personal</h3>
-      <app-informacion-personal [datosPersonales]="datosPersonales"></app-informacion-personal>
-
-    </section>
-
-    Sección: Contacto Personal
-    <section class="form-section">
-      <h3>Contacto Personal</h3>
-      <app-contacto-personal [datosContacto]="datosContacto"></app-contacto-personal>
-    </section>
-
-    Sección: Información Laboral
-    <section class="form-section">
-      <h3>Información Laboral</h3>
-      <app-informacion-laboral [datosLaborales]="datosLaborales"></app-informacion-laboral>
-    </section>
-
-    Botón de acción
-    <div class="form-actions">
-      <button type="submit" class="btn-registrar">
-        Registrar Cliente
-      </button>
+  <!-- 🧩 Contenido de pestañas -->
+  <div class="space-y-6">
+    <!-- Pestaña 1 -->
+    <div *ngIf="pestanaActiva === 'datos-personales'">
+      <app-informacion-personal
+        (formChange)="actualizarDatos('datosPersonales', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-informacion-personal>
     </div>
-  </form> -->
 
-</body>
+    <!-- Pestaña 2 -->
+    <div *ngIf="pestanaActiva === 'contacto-personal'" class="space-y-6">
+      <app-contacto-personal
+        (formChange)="actualizarDatos('contacto', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-contacto-personal>
 
-</html>
+      <app-actividad-economica
+        (formChange)="actualizarDatos('actividad', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-actividad-economica>
+    </div>
+
+    <!-- Pestaña 3 -->
+    <div *ngIf="pestanaActiva === 'info-laboral'" class="space-y-6">
+      <app-informacion-laboral
+        (formChange)="actualizarDatos('laboral', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-informacion-laboral>
+
+      <app-informacion-financiera
+        (formChange)="actualizarDatos('financiera', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-informacion-financiera>
+    </div>
+
+    <!-- Pestaña 4 -->
+    <div *ngIf="pestanaActiva === 'facta'" class="space-y-6">
+      <app-facta
+        (formChange)="actualizarDatos('facta', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-facta>
+
+      <!-- ✅ Solo se muestra aquí -->
+      <div class="text-center mt-8">
+        <button
+          (click)="registrarCliente()"
+          [disabled]="!datosCompletos()"
+          class="bg-green-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-green-700 transition-all shadow-md disabled:bg-gray-300"
+        >
+          Registrar Cliente ✅
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="p-6 max-w-5xl mx-auto">
+   🧾 Título principal 
+  <h1 class="text-3xl font-bold mb-8 text-center text-blue-700">
+    Registro de Cliente
+  </h1>
+
+  🧭 Navegación de pestañas
+  <div class="flex flex-wrap justify-center mb-8 gap-3">
+     Pestaña: Datos personales 
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="activeTab === 'datos-personales'"
+      [class.text-white]="activeTab === 'datos-personales'"
+      [class.bg-gray-100]="activeTab !== 'datos-personales'"
+      (click)="cambiarTab('datos-personales')"
+    >
+      Datos Personales
+    </button>
+
+     Pestaña: Contacto personal 
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="activeTab === 'contacto-personal'"
+      [class.text-white]="activeTab === 'contacto-personal'"
+      [class.bg-gray-100]="activeTab !== 'contacto-personal'"
+      (click)="cambiarTab('contacto-personal')"
+    >
+      Contacto Personal
+    </button>
+
+     Pestaña: Información laboral 
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="activeTab === 'info-laboral'"
+      [class.text-white]="activeTab === 'info-laboral'"
+      [class.bg-gray-100]="activeTab !== 'info-laboral'"
+      (click)="cambiarTab('info-laboral')"
+    >
+      Información Laboral
+    </button>
+
+     Pestaña: FACTA / CRS 
+    <button
+      class="px-4 py-2 rounded-lg font-medium"
+      [class.bg-blue-600]="activeTab === 'facta'"
+      [class.text-white]="activeTab === 'facta'"
+      [class.bg-gray-100]="activeTab !== 'facta'"
+      (click)="cambiarTab('facta')"
+    >
+      FACTA / CRS
+    </button>
+  </div>
+
+   🧩 Contenido de las pestañas 
+  <div class="space-y-6">
+     ✅ Pestaña 1: Datos personales 
+    <div *ngIf="activeTab === 'datos-personales'">
+      <app-datos-personales
+        (formChange)="actualizarSubform('datosPersonales', $event)"
+      ></app-datos-personales>
+    </div>
+
+     ✅ Pestaña 2: Contacto personal + Actividad económica 
+    <div *ngIf="activeTab === 'contacto-personal'" class="space-y-6">
+      <app-contacto-personal
+        (formChange)="actualizarSubform('contactoPersonal', $event)"
+      ></app-contacto-personal>
+
+      <app-actividad-economica
+        (formChange)="actualizarSubform('actividadEconomica', $event)"
+      ></app-actividad-economica>
+    </div>
+
+     ✅ Pestaña 3: Información laboral + financiera 
+    <div *ngIf="activeTab === 'info-laboral'" class="space-y-6">
+      <app-informacion-laboral
+        (formChange)="actualizarSubform('informacionLaboral', $event)"
+      ></app-informacion-laboral>
+
+      <app-informacion-financiera
+        (formChange)="actualizarSubform('informacionFinanciera', $event)"
+      ></app-informacion-financiera>
+    </div>
+
+     ✅ Pestaña 4: FACTA / CRS 
+    <div *ngIf="activeTab === 'facta'" class="space-y-6">
+      <app-facta (formChange)="actualizarSubform('facta', $event)"></app-facta>
+    </div>
+  </div>
+
+   🚀 Botón final de envío 
+  <div class="text-center mt-10">
+    <button
+      (click)="onSubmit()"
+      class="bg-blue-700 text-white font-medium px-8 py-3 rounded-lg hover:bg-blue-800 transition-all shadow-md"
+    >
+      Registrar Cliente
+    </button>
+  </div>
+</div> -->
