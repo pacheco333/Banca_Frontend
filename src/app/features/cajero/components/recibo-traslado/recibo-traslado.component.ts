@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';  // ← IMPORTAR Router
 import { TrasladoService, TrasladoPendiente } from '../../services/traslado.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-recibo-traslado',
@@ -13,9 +15,7 @@ export class ReciboTrasladoComponent implements OnInit {
   trasladosPendientes: TrasladoPendiente[] = [];
   cargando = false;
   trasladoAceptado = false;
-
-  // Cajero fijo del usuario actual
-  cajeroActual = 'Cajero 01'; // ← CAMBIAR SEGÚN TU SISTEMA
+  cajeroActual = '';
 
   datosComprobante = {
     idTraslado: 0,
@@ -26,25 +26,42 @@ export class ReciboTrasladoComponent implements OnInit {
     fechaAceptacion: new Date()
   };
 
-  constructor(private trasladoService: TrasladoService) {}
+  constructor(
+    private trasladoService: TrasladoService,
+    private authService: AuthService,
+    private router: Router  // ← INYECTAR Router
+  ) {}
 
   ngOnInit() {
-    this.cargarTrasladosPendientes();
+    this.authService.currentUser.subscribe(user => {
+      if (user) {
+        this.cajeroActual = user.nombre;
+        console.log('🔑 Cajero actual:', this.cajeroActual);
+        this.cargarTrasladosPendientes();
+      }
+    });
   }
 
   cargarTrasladosPendientes() {
+    if (!this.cajeroActual) {
+      console.warn('⚠️ No hay cajero definido');
+      return;
+    }
+
     this.cargando = true;
     this.trasladosPendientes = [];
-
+    console.log('📦 Consultando traslados para:', this.cajeroActual);
+    
     this.trasladoService.consultarTrasladosPendientes(this.cajeroActual).subscribe({
       next: (response) => {
+        console.log('✅ Respuesta traslados:', response);
         if (response.exito) {
           this.trasladosPendientes = response.traslados;
         }
         this.cargando = false;
       },
       error: (error) => {
-        console.error('Error al cargar traslados:', error);
+        console.error('❌ Error al cargar traslados:', error);
         alert('Error al cargar los traslados pendientes');
         this.cargando = false;
       }
@@ -73,7 +90,6 @@ export class ReciboTrasladoComponent implements OnInit {
       next: (response) => {
         if (response.exito && response.datos) {
           alert(`${response.mensaje}\n\nSu saldo ha sido actualizado.`);
-
           this.datosComprobante = {
             idTraslado: response.datos.idTraslado,
             cajeroOrigen: response.datos.cajeroOrigen,
@@ -82,8 +98,10 @@ export class ReciboTrasladoComponent implements OnInit {
             fechaEnvio: new Date(response.datos.fechaEnvio),
             fechaAceptacion: new Date(response.datos.fechaAceptacion)
           };
-
           this.trasladoAceptado = true;
+          
+          // ✅ Recargar la lista de traslados pendientes
+          this.cargarTrasladosPendientes();
         } else {
           alert(response.mensaje);
         }
@@ -102,5 +120,13 @@ export class ReciboTrasladoComponent implements OnInit {
   volverATraslados() {
     this.trasladoAceptado = false;
     this.cargarTrasladosPendientes();
+  }
+
+  // ✅ NUEVO: Navegar al saldo y recargar
+  verSaldoActualizado() {
+    this.router.navigate(['/cajero/saldo-efectivo']).then(() => {
+      // Forzar recarga completa de la página para ver el saldo actualizado
+      window.location.reload();
+    });
   }
 }
