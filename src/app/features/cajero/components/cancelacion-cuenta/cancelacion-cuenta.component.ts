@@ -34,16 +34,15 @@ export class CancelacionCuentaComponent {
   ) {
     this.cancelacionForm = this.fb.group({
       numeroCuenta: ['', [Validators.required]],
-      numeroDocumento: [''],
-      titular: [''],
-      saldoDisponible: [''],
-      motivoCancelacion: ['']
+      numeroDocumento: [{ value: '', disabled: true }],
+      titular: [{ value: '', disabled: true }],
+      saldoDisponible: [{ value: '', disabled: true }],
+      motivoCancelacion: ['']  // SIN Validators.required
     });
   }
 
   buscarCuenta() {
     const numeroCuenta = this.cancelacionForm.get('numeroCuenta')?.value;
-
     if (!numeroCuenta) {
       alert('Por favor ingrese un número de cuenta');
       return;
@@ -55,15 +54,20 @@ export class CancelacionCuentaComponent {
           this.cuentaEncontrada = true;
           this.idCuenta = response.datos.idCuenta;
 
+          // Agregar estas líneas para deshabilitar campos después de buscar
+          this.cancelacionForm.get('numeroDocumento')?.disable();
+          this.cancelacionForm.get('titular')?.disable();
+          this.cancelacionForm.get('saldoDisponible')?.disable();
+
           this.cancelacionForm.patchValue({
             numeroDocumento: response.datos.numeroDocumento,
             titular: response.datos.titular,
-            saldoDisponible: `$${response.datos.saldo.toLocaleString()}`
+            saldoDisponible: `$${response.datos.saldo.toLocaleString('es-CO')}`
           });
 
           // Validar saldo
           if (response.datos.saldo !== 0) {
-            alert(`⚠️ La cuenta tiene saldo: $${response.datos.saldo.toLocaleString()}\n\nPara cancelar la cuenta, el saldo debe ser $0.\nRealice retiros o transferencias hasta dejar el saldo en $0.`);
+            alert(`⚠️ ADVERTENCIA\n\nLa cuenta tiene saldo: $${response.datos.saldo.toLocaleString('es-CO')}\n\nPara cancelar la cuenta, el saldo debe ser $0.\nRealice retiros o transferencias hasta dejar el saldo en cero.`);
           }
 
           alert(response.mensaje);
@@ -80,15 +84,17 @@ export class CancelacionCuentaComponent {
     });
   }
 
+
   onCancelarCuenta() {
-    if (this.cancelacionForm.invalid || !this.cuentaEncontrada) {
-      alert('Por favor complete todos los campos requeridos');
+    // Solo validar que la cuenta esté encontrada
+    if (!this.cuentaEncontrada) {
+      alert('Por favor busque una cuenta válida');
       return;
     }
 
     const numeroCuenta = this.cancelacionForm.get('numeroCuenta')?.value;
     const numeroDocumento = this.cancelacionForm.get('numeroDocumento')?.value;
-    const motivoCancelacion = this.cancelacionForm.get('motivoCancelacion')?.value;
+    const motivoCancelacion = this.cancelacionForm.get('motivoCancelacion')?.value?.trim() || '';
     const titular = this.cancelacionForm.get('titular')?.value;
 
     // Confirmar cancelación
@@ -101,14 +107,12 @@ export class CancelacionCuentaComponent {
       `Esta acción NO se puede deshacer.`
     );
 
-    if (!confirmar) {
-      return;
-    }
+    if (!confirmar) return;
 
     const datosCancelacion = {
       numeroCuenta: numeroCuenta,
       numeroDocumento: numeroDocumento,
-      motivoCancelacion: motivoCancelacion
+      motivoCancelacion: motivoCancelacion  // ✅ Puede estar vacío
     };
 
     this.cancelacionService.cancelarCuenta(datosCancelacion).subscribe({
@@ -122,7 +126,7 @@ export class CancelacionCuentaComponent {
             numeroDocumento: numeroDocumento,
             titular: titular,
             saldoFinal: response.datos.saldoFinal,
-            motivoCancelacion: motivoCancelacion,
+            motivoCancelacion: response.datos.motivoCancelacion,
             fecha: new Date(response.datos.fechaCancelacion)
           };
 
@@ -147,17 +151,29 @@ export class CancelacionCuentaComponent {
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
     this.cancelacionRealizada = false;
+
+    // Re-deshabilitar campos
+    this.cancelacionForm.get('numeroDocumento')?.disable();
+    this.cancelacionForm.get('titular')?.disable();
+    this.cancelacionForm.get('saldoDisponible')?.disable();
   }
 
   limpiarDatosCuenta() {
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
+
+    // ✅ Re-deshabilitar campos
+    this.cancelacionForm.get('numeroDocumento')?.disable();
+    this.cancelacionForm.get('titular')?.disable();
+    this.cancelacionForm.get('saldoDisponible')?.disable();
+
     this.cancelacionForm.patchValue({
       numeroDocumento: '',
       titular: '',
       saldoDisponible: ''
     });
   }
+
 
   onCancelar() {
     this.cancelacionForm.reset();

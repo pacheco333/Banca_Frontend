@@ -13,7 +13,6 @@ import { TrasladoService } from '../../services/traslado.service';
 export class TrasladoCajeroComponent {
   trasladoForm: FormGroup;
   trasladoRealizado = false;
-
   readonly MONTO_MAXIMO = 9999999999999;
   readonly MONTO_MINIMO = 1;
   readonly MAX_DIGITOS = 13;
@@ -51,15 +50,24 @@ export class TrasladoCajeroComponent {
 
   onInputMonto(event: Event) {
     const input = event.target as HTMLInputElement;
-    let valor = input.value.replace(/[^0-9]/g, '');
-    
+
+    // 1. Remover puntos existentes y otros caracteres no numéricos
+    let valor = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+
+    // 2. Limitar a 13 dígitos
     if (valor.length > this.MAX_DIGITOS) {
       valor = valor.substring(0, this.MAX_DIGITOS);
     }
-    
-    input.value = valor;
+
+    // 3. Convertir a número para el form (para validaciones)
     const numero = valor ? Number(valor) : 0;
     this.trasladoForm.patchValue({ monto: numero }, { emitEvent: false });
+
+    // 4. Formatear con puntos cada 3 dígitos desde la derecha
+    const valorFormateado = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    // 5. Actualizar el input visual con el formato (sobrescribe el binding del form)
+    input.value = valorFormateado;
   }
 
   onEnviarTraslado() {
@@ -104,7 +112,6 @@ export class TrasladoCajeroComponent {
       next: (response) => {
         if (response.exito && response.datos) {
           alert(`${response.mensaje}\n\nEl ${cajeroDestino} debe aceptar el traslado para recibir el dinero.`);
-
           this.datosComprobante = {
             idTraslado: response.datos.idTraslado,
             cajeroOrigen: this.cajeroActual,
@@ -112,7 +119,6 @@ export class TrasladoCajeroComponent {
             monto: montoNumero,
             fecha: new Date(response.datos.fechaEnvio)
           };
-
           this.trasladoRealizado = true;
         } else {
           alert(response.mensaje);

@@ -38,27 +38,34 @@ export class RetiroVentanillaComponent {
   ) {
     this.retiroForm = this.fb.group({
       numeroCuenta: ['', [Validators.required]],
-      numeroDocumento: [''],
-      titular: [''],
-      saldoDisponible: [''],
-      montoRetirar: ['', [Validators.required, Validators.min(this.MONTO_MINIMO)]]
+      numeroDocumento: [{ value: '', disabled: true }],
+      titular: [{ value: '', disabled: true }],
+      saldoDisponible: [{ value: '', disabled: true }],
+      montoRetirar: [{ value: '', disabled: true }, [Validators.required, Validators.min(this.MONTO_MINIMO)]]  // ✅ disabled
     });
   }
 
   // Validar monto en tiempo real
   onInputMonto(event: Event) {
     const input = event.target as HTMLInputElement;
-    let valor = input.value.replace(/[^0-9]/g, ''); // Solo números
 
-    // Limitar a 13 dígitos
+    // 1. Remover puntos existentes y otros caracteres no numéricos
+    let valor = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+
+    // 2. Limitar a 13 dígitos
     if (valor.length > this.MAX_DIGITOS) {
       valor = valor.substring(0, this.MAX_DIGITOS);
     }
 
-    // Actualizar input y formulario
-    input.value = valor;
+    // 3. Convertir a número para el form (para validaciones)
     const numero = valor ? Number(valor) : 0;
     this.retiroForm.patchValue({ montoRetirar: numero }, { emitEvent: false });
+
+    // 4. Formatear con puntos cada 3 dígitos desde la derecha
+    const valorFormateado = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    // 5. Actualizar el input visual con el formato (sobrescribe el binding del form)
+    input.value = valorFormateado;
   }
 
   buscarCuenta() {
@@ -74,6 +81,8 @@ export class RetiroVentanillaComponent {
         if (response.existe && response.datos) {
           this.cuentaEncontrada = true;
           this.idCuenta = response.datos.idCuenta;
+
+          this.retiroForm.get('montoRetirar')?.enable();
 
           this.retiroForm.patchValue({
             numeroDocumento: response.datos.numeroDocumento,
@@ -156,11 +165,17 @@ export class RetiroVentanillaComponent {
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
     this.retiroRealizado = false;
+
+    this.retiroForm.get('numeroDocumento')?.disable();
+    this.retiroForm.get('titular')?.disable();
+    this.retiroForm.get('saldoDisponible')?.disable();
+    this.retiroForm.get('montoRetirar')?.disable();
   }
 
   limpiarDatosCuenta() {
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
+    this.retiroForm.get('montoRetirar')?.disable();
     this.retiroForm.patchValue({
       numeroDocumento: '',
       titular: '',
@@ -171,5 +186,10 @@ export class RetiroVentanillaComponent {
   onCancelar() {
     this.retiroForm.reset();
     this.limpiarDatosCuenta();
+
+    this.retiroForm.get('numeroDocumento')?.disable();
+    this.retiroForm.get('titular')?.disable();
+    this.retiroForm.get('saldoDisponible')?.disable();
+    this.retiroForm.get('montoRetirar')?.disable();
   }
 }

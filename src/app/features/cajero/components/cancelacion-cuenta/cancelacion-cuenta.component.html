@@ -145,7 +145,7 @@
             Motivo de Cancelación
           </label>
           <textarea formControlName="motivoCancelacion" placeholder="Ingrese el motivo de cancelación (opcional)"
-            rows="3" maxlength="500" [disabled]="!cuentaEncontrada"
+            rows="3" maxlength="500"
             class="w-full px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm border rounded-lg focus:outline-none focus:border-blue-500 resize-none"
             [ngClass]="{
               'border-gray-300': !cancelacionForm.get('motivoCancelacion')?.invalid || !cancelacionForm.get('motivoCancelacion')?.touched,
@@ -169,7 +169,7 @@
 
         <!-- Botones -->
         <div class="flex flex-col sm:flex-row gap-2 md:gap-3 mt-4 md:mt-6">
-          <button type="submit" [disabled]="!cuentaEncontrada || !cancelacionForm.get('motivoCancelacion')?.value"
+          <button type="submit" [disabled]="!cuentaEncontrada"
             class="flex-1 px-4 md:px-6 py-2 md:py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors text-xs md:text-sm disabled:bg-gray-300 disabled:cursor-not-allowed">
             Cancelar Cuenta
           </button>

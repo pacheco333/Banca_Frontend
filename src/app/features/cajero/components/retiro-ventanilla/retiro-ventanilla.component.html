@@ -153,18 +153,19 @@
               Monto a Retirar <span class="text-red-500">*</span>
             </label>
             <input type="text" formControlName="montoRetirar" placeholder="Ingrese el monto"
-              (input)="onInputMonto($event)" [disabled]="!cuentaEncontrada" maxlength="13"
+              (input)="onInputMonto($event)" maxlength="17"
               class="w-full px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm border rounded-lg focus:outline-none focus:border-blue-500"
               [ngClass]="{
-                'border-gray-300': !retiroForm.get('montoRetirar')?.invalid || !retiroForm.get('montoRetirar')?.touched,
-                'border-red-500': retiroForm.get('montoRetirar')?.invalid && retiroForm.get('montoRetirar')?.touched
-              }" />
+      'border-gray-300': !retiroForm.get('montoRetirar')?.invalid || !retiroForm.get('montoRetirar')?.touched,
+      'border-red-500': retiroForm.get('montoRetirar')?.invalid && retiroForm.get('montoRetirar')?.touched
+    }">
             <p class="text-xs text-red-500 mt-1"
               *ngIf="retiroForm.get('montoRetirar')?.invalid && retiroForm.get('montoRetirar')?.touched">
-              El monto es requerido
+              El monto es requerido y debe ser mayor a $1
             </p>
-            <p class="text-xs text-gray-500 mt-1" *ngIf="!retiroForm.get('montoRetirar')?.invalid">Máximo:
-              9,999,999,999,999</p>
+            <p class="text-xs text-gray-500 mt-1" *ngIf="!retiroForm.get('montoRetirar')?.invalid">
+              Máximo 9,999,999,999,999
+            </p>
           </div>
         </div>
 

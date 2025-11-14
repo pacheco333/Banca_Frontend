@@ -17,9 +17,8 @@ export class NotaDebitoComponent {
   idCuenta: number = 0;
   notaDebitoRealizada = false;
 
-  // Constantes alineadas con apertura
-  readonly MONTO_MAXIMO = 9999999999999; // 13 dígitos
-  readonly MONTO_MINIMO = 1; // Mínimo $1 para nota débito
+  readonly MONTO_MAXIMO = 9999999999999;
+  readonly MONTO_MINIMO = 1;
   readonly MAX_DIGITOS = 13;
 
   datosComprobante = {
@@ -40,32 +39,37 @@ export class NotaDebitoComponent {
   ) {
     this.notaDebitoForm = this.fb.group({
       numeroCuenta: ['', [Validators.required]],
-      numeroDocumento: [''],
-      titular: [''],
-      saldoDisponible: [''],
-      valor: ['', [Validators.required, Validators.min(this.MONTO_MINIMO)]]
+      numeroDocumento: [{ value: '', disabled: true }],
+      titular: [{ value: '', disabled: true }],
+      saldoDisponible: [{ value: '', disabled: true }],
+      valor: [{ value: '', disabled: true }, [Validators.required, Validators.min(this.MONTO_MINIMO)]]  // ✅ disabled
     });
   }
 
-  // Validar valor en tiempo real
   onInputValor(event: Event) {
     const input = event.target as HTMLInputElement;
-    let valor = input.value.replace(/[^0-9]/g, ''); // Solo números
 
-    // Limitar a 13 dígitos
+    // 1. Remover puntos existentes y otros caracteres no numéricos
+    let valor = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+
+    // 2. Limitar a 13 dígitos
     if (valor.length > this.MAX_DIGITOS) {
       valor = valor.substring(0, this.MAX_DIGITOS);
     }
 
-    // Actualizar input y formulario
-    input.value = valor;
+    // 3. Convertir a número para el form (para validaciones)
     const numero = valor ? Number(valor) : 0;
     this.notaDebitoForm.patchValue({ valor: numero }, { emitEvent: false });
+
+    // 4. Formatear con puntos cada 3 dígitos desde la derecha
+    const valorFormateado = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    // 5. Actualizar el input visual con el formato (sobrescribe el binding del form)
+    input.value = valorFormateado;
   }
 
   buscarCuenta() {
     const numeroCuenta = this.notaDebitoForm.get('numeroCuenta')?.value;
-
     if (!numeroCuenta) {
       alert('Por favor ingrese un número de cuenta');
       return;
@@ -77,12 +81,14 @@ export class NotaDebitoComponent {
           this.cuentaEncontrada = true;
           this.idCuenta = response.datos.idCuenta;
 
+          // Habilitar campo valor
+          this.notaDebitoForm.get('valor')?.enable();
+
           this.notaDebitoForm.patchValue({
             numeroDocumento: response.datos.numeroDocumento,
             titular: response.datos.titular,
             saldoDisponible: `$${response.datos.saldo.toLocaleString('es-CO')}`
           });
-
           alert(response.mensaje);
         } else {
           alert(response.mensaje);
@@ -107,9 +113,8 @@ export class NotaDebitoComponent {
     const valor = this.notaDebitoForm.get('valor')?.value;
     const numeroCuenta = this.notaDebitoForm.get('numeroCuenta')?.value;
     const titular = this.notaDebitoForm.get('titular')?.value;
-
-    // Validar valor máximo
     const monto = parseFloat(valor);
+
     if (monto > this.MONTO_MAXIMO) {
       alert(`⚠️ El valor máximo permitido es $9,999,999,999,999`);
       return;
@@ -124,7 +129,7 @@ export class NotaDebitoComponent {
     this.notaDebitoService.aplicarNotaDebito(datosNotaDebito).subscribe({
       next: (response) => {
         if (response.exito && response.datos) {
-          alert(`${response.mensaje}\n\nSaldo anterior: $${response.datos.saldoAnterior.toLocaleString()}\nValor debitado: $${response.datos.valor.toLocaleString()}\nSaldo nuevo: $${response.datos.saldoNuevo.toLocaleString()}`);
+          alert(`✅ ${response.mensaje}\n\nSaldo anterior: $${response.datos.saldoAnterior.toLocaleString()}\nValor debitado: $${response.datos.valor.toLocaleString()}\nSaldo nuevo: $${response.datos.saldoNuevo.toLocaleString()}`);
 
           this.datosComprobante = {
             idTransaccion: response.datos.idTransaccion,
@@ -158,19 +163,37 @@ export class NotaDebitoComponent {
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
     this.notaDebitoRealizada = false;
+
+    // Re-deshabilitar campos
+    this.notaDebitoForm.get('numeroDocumento')?.disable();
+    this.notaDebitoForm.get('titular')?.disable();
+    this.notaDebitoForm.get('saldoDisponible')?.disable();
+    this.notaDebitoForm.get('valor')?.disable();
   }
 
   limpiarDatosCuenta() {
     this.cuentaEncontrada = false;
     this.idCuenta = 0;
+
+    // Deshabilitar campo valor
+    this.notaDebitoForm.get('valor')?.disable();
+
     this.notaDebitoForm.patchValue({
       numeroDocumento: '',
-      titular: ''
+      titular: '',
+      saldoDisponible: '',
+      valor: ''
     });
   }
 
   onCancelar() {
     this.notaDebitoForm.reset();
     this.limpiarDatosCuenta();
+
+    // Re-deshabilitar campos
+    this.notaDebitoForm.get('numeroDocumento')?.disable();
+    this.notaDebitoForm.get('titular')?.disable();
+    this.notaDebitoForm.get('saldoDisponible')?.disable();
+    this.notaDebitoForm.get('valor')?.disable();
   }
 }

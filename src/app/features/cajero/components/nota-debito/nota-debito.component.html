@@ -147,24 +147,27 @@
               readonly />
           </div>
 
+
+
           <!-- Valor a Debitar -->
           <div>
             <label class="block text-xs md:text-sm font-medium text-gray-700 mb-1">
               Valor a Debitar <span class="text-red-500">*</span>
             </label>
             <input type="text" formControlName="valor" placeholder="Ingrese el valor" (input)="onInputValor($event)"
-              [disabled]="!cuentaEncontrada" maxlength="13"
+              maxlength="17"
               class="w-full px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm border rounded-lg focus:outline-none focus:border-blue-500"
               [ngClass]="{
-                'border-gray-300': !notaDebitoForm.get('valor')?.invalid || !notaDebitoForm.get('valor')?.touched,
-                'border-red-500': notaDebitoForm.get('valor')?.invalid && notaDebitoForm.get('valor')?.touched
-              }" />
+      'border-gray-300': !notaDebitoForm.get('valor')?.invalid || !notaDebitoForm.get('valor')?.touched,
+      'border-red-500': notaDebitoForm.get('valor')?.invalid && notaDebitoForm.get('valor')?.touched
+    }">
             <p class="text-xs text-red-500 mt-1"
               *ngIf="notaDebitoForm.get('valor')?.invalid && notaDebitoForm.get('valor')?.touched">
               El valor es requerido
             </p>
-            <p class="text-xs text-gray-500 mt-1" *ngIf="!notaDebitoForm.get('valor')?.invalid">Máximo:
-              9,999,999,999,999</p>
+            <p class="text-xs text-gray-500 mt-1" *ngIf="!notaDebitoForm.get('valor')?.invalid">
+              Máximo 9,999,999,999,999
+            </p>
           </div>
         </div>
 
