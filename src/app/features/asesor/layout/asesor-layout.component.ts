@@ -13,7 +13,7 @@ import { SidebarComponent } from '../../../shared/components/sidebar/sidebar.com
       <app-sidebar [menuItems]="asesorMenuItems"></app-sidebar>
 
       <!-- Contenido principal -->
-      <main class="flex-1 min-w-0 w-full overflow-x-hidden ">
+      <main class="flex-1 h-screen overflow-x-hidden ">
         <app-header
           [titulo]="'Panel de Asesor'"
           [subtitulo]="'Sistema de Simulación Bancaria - Banca Uno'"
