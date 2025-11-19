@@ -1,70 +1,178 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Formulario Tailwind</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-6">
-  <div class="max-w-5xl mx-auto bg-white p-6 rounded-xl">
+<div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+  <h2 class="text-xl font-semibold text-blue-700 mb-4">
+    Contacto Personal
+  </h2>
 
-    <div class="grid grid-cols-2 gap-x-8 gap-y-6">
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Dirección de residencia</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-        <p *ngIf="form.get('direccion')?.touched && form.get('direccion')?.invalid"
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Dirección -->
+    <div class="col-span-2">
+      <label class="block text-sm font-medium mb-1">Dirección</label>
+      <input
+        formControlName="direccion"
+        type="text"
+        placeholder="Ej: Calle 123 #45-67"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('direccion')?.touched && form.get('direccion')?.invalid"
          class="text-red-500 text-sm mt-1">Campo obligatorio</p>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Bloque/Torre</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Apto/Casa</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Barrio</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Ciudad/Municipio</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Departamento</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">País</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Teléfono</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-        <p *ngIf="form.get('telefono')?.touched && form.get('telefono')?.invalid"
-         class="text-red-500 text-sm mt-1">Campo obligatorio (mínimo 7 dígitos)</p>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold mb-2">Correo electrónico</label>
-        <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Charlene Reed" />
-         <p *ngIf="form.get('correo')?.touched && form.get('correo')?.invalid"
-         class="text-red-500 text-sm mt-1">Debe ser un correo válido</p>
-      </div>
     </div>
-    <button (click)="guardarSeccion()"
-      class="bg-blue-600 text-white font-medium px-6 py-2 rounded-lg hover:bg-blue-700 transition-all"class="mt-6 float-right bg-blue-600 text-white py-3 px-6 rounded-lg">Guardar</button>
 
+    <!-- Barrio -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Barrio</label>
+      <input formControlName="barrio" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Departamento -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Departamento</label>
+      <input formControlName="departamento" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Ciudad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Ciudad</label>
+      <input formControlName="ciudad" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- País -->
+    <div>
+      <label class="block text-sm font-medium mb-1">País</label>
+      <input formControlName="pais" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Teléfono -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Teléfono</label>
+      <input
+        formControlName="telefono"
+        type="text"
+        placeholder="Ej: 3001234567"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('telefono')?.touched && form.get('telefono')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio (mínimo 7 dígitos)</p>
+    </div>
+
+    <!-- Correo electrónico -->
+    <div class="col-span-2">
+      <label class="block text-sm font-medium mb-1">Correo electrónico</label>
+      <input
+        formControlName="correo"
+        type="email"
+        placeholder="Ej: ejemplo@correo.com"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('correo')?.touched && form.get('correo')?.invalid"
+         class="text-red-500 text-sm mt-1">Debe ser un correo válido</p>
+    </div>
+
+    <!-- Bloque/Torre -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Bloque o Torre</label>
+      <input formControlName="bloqueTorre" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+    <!-- Apto/Casa -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Apto o Casa</label>
+      <input formControlName="aptoCasa" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+  </form>
+
+  <!-- 💾 Botón para guardar y avanzar -->
+  <div class="text-right mt-6">
+    <button
+      (click)="guardarSeccion()"
+      class="bg-blue-600 text-white font-medium px-6 py-2 rounded-lg hover:bg-blue-700 transition-all"
+    >
+      Guardar Sección
+    </button>
   </div>
-</body>
-</html>
+</div>
+
+
+<!-- <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+  <h2 class="text-xl font-semibold text-blue-700 mb-4">
+    Contacto Personal
+  </h2>
+
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4"> -->
+
+    <!-- Dirección -->
+    <!-- <div class="col-span-2">
+      <label class="block text-sm font-medium mb-1">Dirección</label>
+      <input
+        formControlName="direccion"
+        type="text"
+        placeholder="Ej: Calle 123 #45-67"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('direccion')?.touched && form.get('direccion')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div> -->
+
+    <!-- Barrio -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Barrio</label>
+      <input formControlName="barrio" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+    <!-- Departamento -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Departamento</label>
+      <input formControlName="departamento" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+    <!-- Ciudad -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Ciudad</label>
+      <input formControlName="ciudad" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+    <!-- País -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">País</label>
+      <input formControlName="pais" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+    <!-- Teléfono -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Teléfono</label>
+      <input
+        formControlName="telefono"
+        type="text"
+        placeholder="Ej: 3001234567"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('telefono')?.touched && form.get('telefono')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio (mínimo 7 dígitos)</p>
+    </div> -->
+
+    <!-- Correo electrónico -->
+    <!-- <div class="col-span-2">
+      <label class="block text-sm font-medium mb-1">Correo electrónico</label>
+      <input
+        formControlName="correo"
+        type="email"
+        placeholder="Ej: ejemplo@correo.com"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('correo')?.touched && form.get('correo')?.invalid"
+         class="text-red-500 text-sm mt-1">Debe ser un correo válido</p>
+    </div> -->
+
+    <!-- Bloque/Torre -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Bloque o Torre</label>
+      <input formControlName="bloqueTorre" type="text" class="w-full border rounded px-3 py-2" />
+    </div> -->
+
+    <!-- Apto/Casa -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Apto o Casa</label>
+      <input formControlName="aptoCasa" type="text" class="w-full border rounded px-3 py-2" />
+    </div>
+
+  </form>
+</div> -->

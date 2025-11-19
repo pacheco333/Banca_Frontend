@@ -1,55 +1,182 @@
-  <div class="p-8 bg-gray-50 min-h-screen">
-  <div class="max-w-4xl mx-auto flex flex-wrap lg:flex-nowrap gap-8">
-    
-    <div class="w-full lg:w-3/5 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-      <h2 class="text-xl font-semibold mb-6 text-gray-800">Actividad Económica</h2>
-      
-      <div class="mb-6">
-        <label for="profesion" class="block text-lg font-medium text-gray-700">Profesión</label>
-        <input type="text" id="profesion" value="Charlene Reed" class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900">
-        <p *ngIf="form.get('profesion')?.touched && form.get('profesion')?.invalid"
+<div class="bg-white shadow-md rounded-lg p-6 border border-gray-200 mt-8">
+  <h2 class="text-xl font-semibold text-blue-700 mb-4">
+    Actividad Económica
+  </h2>
+
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <!-- Profesión -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Profesión</label>
+      <input
+        formControlName="profesion"
+        type="text"
+        placeholder="Ej: Ingeniero, Contador..."
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('profesion')?.touched && form.get('profesion')?.invalid"
          class="text-red-500 text-sm mt-1">Campo obligatorio</p>
-      </div>
-      
-      <p class="text-sm text-gray-500 mb-6 leading-relaxed">
-        Si tu ocupación es independiente, profesional independiente, comerciante, ganadero, agricultor o rentista de capital, por favor diligencia esta información:
-      </p>
-      
-      <div class="mb-6">
-        <label for="detalle_actividad" class="block text-lg font-medium text-gray-700">Detalle de la actividad económica principal</label>
-        <input type="text" id="detalle_actividad" value="Charlene Reed" class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900">
-      </div>
-      
-      <div class="flex space-x-4">
-        <div class="w-1/2">
-          <label for="codigo_ciiu" class="block text-lg font-medium text-gray-700">Código CIIU</label>
-          <input type="text" id="codigo_ciiu" value="Charlene Reed" class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900">
-        </div>
-        <div class="w-1/2">
-          <label for="num_empleados" class="block text-lg font-medium text-gray-700">Nº. Empleados</label>
-          <input type="text" id="num_empleados" value="Charlene Reed" class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900">
-          <p *ngIf="form.get('numeroEmpleados')?.touched && form.get('numeroEmpleados')?.invalid"
+    </div>
+
+    <!-- Ocupación -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Ocupación</label>
+      <input
+        formControlName="ocupacion"
+        type="text"
+        placeholder="Ej: Empleado, Independiente..."
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('ocupacion')?.touched && form.get('ocupacion')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div>
+
+    <!-- Código CIIU -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Código CIIU</label>
+      <input
+        formControlName="codigoCiiu"
+        type="text"
+        placeholder="Ej: 6201"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('codigoCiiu')?.touched && form.get('codigoCiiu')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div>
+
+    <!-- Detalle de la actividad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Detalle de la Actividad</label>
+      <input
+        formControlName="detalleActividad"
+        type="text"
+        placeholder="Ej: Consultoría en software"
+        class="w-full border rounded px-3 py-2"
+      />
+    </div>
+
+    <!-- Número de empleados -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Número de Empleados</label>
+      <input
+        formControlName="numeroEmpleados"
+        type="number"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('numeroEmpleados')?.touched && form.get('numeroEmpleados')?.invalid"
          class="text-red-500 text-sm mt-1">Debe ser un número igual o mayor a 0</p>
-        </div>
+    </div>
+
+    <!-- FACTA/CRS -->
+    <div>
+      <label class="block text-sm font-medium mb-1">¿Aplica FACTA/CRS?</label>
+      <div class="flex items-center gap-4 mt-1">
+        <label class="flex items-center gap-1">
+          <input type="radio" formControlName="factaCrs" [value]="true" class="accent-blue-600" />
+          Sí
+        </label>
+        <label class="flex items-center gap-1">
+          <input type="radio" formControlName="factaCrs" [value]="false" class="accent-blue-600" />
+          No
+        </label>
       </div>
     </div>
-    
-    <div class="w-full lg:w-2/5 flex flex-col items-start lg:items-end pt-2 bg-gray-50">
-      <h2 class="text-xl font-semibold mb-6 text-gray-800">Ocupación/Oficio</h2>
-      
-      <div class="w-full mb-8 max-w-xs lg:max-w-full">
-        <select id="ocupacion" class="block w-full px-4 py-3 border border-gray-300 bg-white rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 appearance-none pr-8">
-          <option>Empleado</option>
-          <option>Independiente</option>
-          <option>Estudiante</option>
-        </select>
-        <p *ngIf="form.get('ocupacion')?.touched && form.get('ocupacion')?.invalid"
-         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
-      </div>
-      
-      <button (click)="guardarSeccion()" class="mt-auto w-full max-w-xs lg:max-w-none px-6 py-3 text-lg font-medium text-white bg-blue-700 rounded-lg shadow-xl hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-150 ease-in-out">
-        Guardar
-      </button>
-    </div>
+  </form>
+
+  <!-- 💾 Botón para guardar y continuar -->
+  <div class="text-right mt-6">
+    <button
+      (click)="guardarSeccion()"
+      class="bg-blue-600 text-white font-medium px-6 py-2 rounded-lg hover:bg-blue-700 transition-all"
+    >
+      Guardar Sección
+    </button>
   </div>
 </div>
+
+
+<!-- <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200 mt-8">
+  <h2 class="text-xl font-semibold text-blue-700 mb-4">
+    Actividad Económica
+  </h2> -->
+
+  <!-- <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4"> -->
+
+    <!-- Profesión -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Profesión</label>
+      <input
+        formControlName="profesion"
+        type="text"
+        placeholder="Ej: Ingeniero, Contador..."
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('profesion')?.touched && form.get('profesion')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div> -->
+
+    <!-- Ocupación -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Ocupación</label>
+      <input
+        formControlName="ocupacion"
+        type="text"
+        placeholder="Ej: Empleado, Independiente..."
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('ocupacion')?.touched && form.get('ocupacion')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div> -->
+
+    <!-- Código CIIU -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Código CIIU</label>
+      <input
+        formControlName="codigoCiiu"
+        type="text"
+        placeholder="Ej: 6201"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('codigoCiiu')?.touched && form.get('codigoCiiu')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div> -->
+
+    <!-- Detalle de la actividad -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Detalle de la Actividad</label>
+      <input
+        formControlName="detalleActividad"
+        type="text"
+        placeholder="Ej: Consultoría en software"
+        class="w-full border rounded px-3 py-2"
+      />
+    </div> -->
+
+    <!-- Número de empleados -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">Número de Empleados</label>
+      <input
+        formControlName="numeroEmpleados"
+        type="number"
+        class="w-full border rounded px-3 py-2"
+      />
+      <p *ngIf="form.get('numeroEmpleados')?.touched && form.get('numeroEmpleados')?.invalid"
+         class="text-red-500 text-sm mt-1">Debe ser un número igual o mayor a 0</p>
+    </div> -->
+
+    <!-- FACTA/CRS -->
+    <!-- <div>
+      <label class="block text-sm font-medium mb-1">¿Aplica FACTA/CRS?</label>
+      <div class="flex items-center gap-4 mt-1">
+        <label class="flex items-center gap-1">
+          <input type="radio" formControlName="factaCrs" [value]="true" class="accent-blue-600" />
+          Sí
+        </label>
+        <label class="flex items-center gap-1">
+          <input type="radio" formControlName="factaCrs" [value]="false" class="accent-blue-600" />
+          No
+        </label>
+      </div>
+    </div>
+  </form>
+</div> -->
