@@ -2,10 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+
+// ========================================
+// INTERFACES
+// ========================================
 
 export interface LoginRequest {
-  email: string;
-  password: string;
+  correo: string;
+  contrasena: string;
   rol: string;
 }
 
@@ -14,17 +19,35 @@ export interface LoginResponse {
   message: string;
   token?: string;
   user?: {
-    id: number;
-    email: string;
+    id_usuario: number;
+    correo: string;
     nombre: string;
     rol: string;
     id_usuario_rol?: number;
   };
 }
 
+export interface RegistroRequest {
+  nombre: string;
+  correo: string;
+  contrasena: string;
+}
+
+export interface RegistroResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    id_usuario: number;
+    nombre: string;
+    correo: string;
+    fecha_creacion: Date;
+    activo: boolean;
+  };
+}
+
 export interface User {
-  id: number;
-  email: string;
+  id_usuario: number;
+  correo: string;
   nombre: string;
   rol: string;
   id_usuario_rol?: number;
@@ -41,13 +64,16 @@ export interface RolesResponse {
   roles: Rol[];
 }
 
+// ========================================
+// SERVICIO DE AUTENTICACIÓN
+// ========================================
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Ajusta esta URL a tu backend
-  private apiUrl = 'http://localhost:3000/api/auth';
-  
+  private apiUrl = `${environment.apiUrl}/auth`;
+
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
 
@@ -55,7 +81,8 @@ export class AuthService {
     private http: HttpClient,
     private router: Router
   ) {
-    const storedUser = localStorage.getItem('currentUser');
+    // Buscar en ambos lugares para compatibilidad
+    const storedUser = localStorage.getItem('user') || localStorage.getItem('currentUser');
     this.currentUserSubject = new BehaviorSubject<User | null>(
       storedUser ? JSON.parse(storedUser) : null
     );
@@ -66,28 +93,73 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  // ========================================
+  // AUTENTICACIÓN
+  // ========================================
+
+  /**
+   * Login de usuario
+   * Decodifica el token JWT para extraer la información del usuario
+   */
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
         tap(response => {
-          if (response.success && response.token && response.user) {
-            // Guardar token y usuario en localStorage
+          if (response.success && response.token) {
+            console.log('✅ Login exitoso, guardando token...');
+
+            // Guardar token
             localStorage.setItem('token', response.token);
-            localStorage.setItem('currentUser', JSON.stringify(response.user));
-            this.currentUserSubject.next(response.user);
+
+            // Decodificar el token para extraer el usuario
+            try {
+              const payload = JSON.parse(atob(response.token.split('.')[1]));
+              const user: User = {
+                id_usuario: payload.id_usuario,
+                correo: payload.correo,
+                nombre: payload.nombre,
+                rol: payload.rol,
+                id_usuario_rol: payload.id_usuario_rol
+              };
+
+              // Guardar usuario en AMBOS lugares para compatibilidad
+              localStorage.setItem('currentUser', JSON.stringify(user));
+              localStorage.setItem('user', JSON.stringify(user));
+              
+              this.currentUserSubject.next(user);
+
+              console.log('✅ Token y usuario guardados correctamente');
+              console.log('Usuario:', user);
+            } catch (error) {
+              console.error('❌ Error al decodificar token:', error);
+            }
           }
         })
       );
   }
 
   /**
-   * Obtener roles disponibles para un usuario específico
+   * Registro de usuario
    */
-  getRolesDisponibles(email: string): Observable<RolesResponse> {
-    return this.http.get<RolesResponse>(`${this.apiUrl}/roles-disponibles`, {
-      params: { email }
-    });
+  registro(datos: RegistroRequest): Observable<RegistroResponse> {
+    return this.http.post<RegistroResponse>(`${this.apiUrl}/registro`, datos);
   }
+
+  /**
+   * Cerrar sesión
+   */
+  logout(): void {
+    // Remover todos los datos de autenticación
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('user');
+    this.currentUserSubject.next(null);
+    this.router.navigate(['/auth/login']);
+  }
+
+  // ========================================
+  // GESTIÓN DE ROLES
+  // ========================================
 
   /**
    * Obtener todos los roles del sistema
@@ -97,53 +169,90 @@ export class AuthService {
   }
 
   /**
+   * Obtener roles disponibles para un usuario específico
+   */
+  getRolesDisponibles(correo: string): Observable<RolesResponse> {
+    return this.http.get<RolesResponse>(`${this.apiUrl}/roles-disponibles`, {
+      params: { correo }
+    });
+  }
+
+  /**
    * Asignar un rol a un usuario
    */
-  asignarRol(email: string, rol: string): Observable<{ success: boolean; message: string }> {
+  asignarRol(correo: string, rol: string): Observable<{ success: boolean; message: string }> {
     return this.http.post<{ success: boolean; message: string }>(
       `${this.apiUrl}/asignar-rol`,
-      { email, rol }
+      { correo, rol }
     );
   }
 
   /**
    * Verificar si un usuario tiene un rol específico
    */
-  verificarRol(email: string, rol: string): Observable<{ success: boolean; tieneRol: boolean }> {
+  verificarRol(correo: string, rol: string): Observable<{ success: boolean; tieneRol: boolean }> {
     return this.http.get<{ success: boolean; tieneRol: boolean }>(
       `${this.apiUrl}/verificar-rol`,
-      { params: { email, rol } }
+      { params: { correo, rol } }
     );
   }
 
-  logout(): void {
-    // Remover datos de autenticación
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+  // ========================================
+  // VALIDACIONES
+  // ========================================
+
+  /**
+   * Validar si un correo ya existe
+   */
+  validarEmail(correo: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.apiUrl}/validar-email`, {
+      params: { correo }
+    });
   }
 
+  // ========================================
+  // UTILIDADES
+  // ========================================
+
+  /**
+   * Verificar si el usuario está autenticado
+   */
   isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     return !!token;
   }
 
+  /**
+   * Obtener token JWT
+   */
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
+  /**
+   * Obtener rol del usuario actual
+   */
   getUserRole(): string | null {
     const user = this.currentUserValue;
     return user ? user.rol : null;
   }
 
+  /**
+   * Verificar si el usuario tiene un rol específico
+   * Normaliza los roles para comparación (minúsculas y guiones)
+   */
   hasRole(role: string): boolean {
     const userRole = this.getUserRole();
-    return userRole === role;
+    if (!userRole) return false;
+
+    // Normalizar roles: minúsculas y separadores unificados
+    const normalize = (val: string) => val.toLowerCase().trim().replace(/[_\s-]+/g, '-');
+    return normalize(userRole) === normalize(role);
   }
 
-  // Método para agregar el token a las peticiones HTTP
+  /**
+   * Método para agregar el token a las peticiones HTTP
+   */
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({

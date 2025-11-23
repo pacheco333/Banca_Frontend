@@ -13,16 +13,16 @@ export class HeaderComponent implements OnInit {
   @Input() subtitulo: string = 'Sistema de Simulación Bancaria';
   
   currentUser: User | null = null;
+  dropdownOpen = false;  // ← Para controlar el dropdown
 
   constructor(private authService: AuthService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
   }
 
-  // Método para obtener las iniciales del usuario
   get iniciales(): string {
     if (!this.currentUser || !this.currentUser.nombre) return '';
     const nombres = this.currentUser.nombre.trim().split(' ');
@@ -32,7 +32,10 @@ export class HeaderComponent implements OnInit {
     return nombres[0][0].toUpperCase();
   }
 
-  // Método para cerrar sesión
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
   cerrarSesion(): void {
     if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
       this.authService.logout();

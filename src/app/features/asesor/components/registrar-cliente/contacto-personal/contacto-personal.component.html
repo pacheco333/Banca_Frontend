@@ -1,0 +1,105 @@
+<div class="p-6 max-w-7xl mx-auto bg-white shadow-sm rounded-lg border border-gray-200">
+  <form [formGroup]="form" class="space-y-6">
+    <!-- Dirección -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+      <input
+        formControlName="direccion"
+        type="text"
+        placeholder="Ej: Calle 123 #45-67"
+        maxlength="200"
+        class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+      />
+      <p *ngIf="form.get('direccion')?.touched && form.get('direccion')?.invalid"
+         class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+    </div>
+
+    <!-- Barrio y Departamento -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Barrio</label>
+        <input formControlName="barrio" type="text" 
+          maxlength="100"
+          (keypress)="alfanumerico($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Departamento</label>
+        <input formControlName="departamento" type="text" 
+          maxlength="100"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+    </div>
+
+    <!-- Ciudad y País -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ciudad</label>
+        <input formControlName="ciudad" type="text" 
+          maxlength="100"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">País</label>
+        <input formControlName="pais" type="text" 
+          maxlength="100"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+    </div>
+
+    <!-- Teléfono y Correo electrónico -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+        <input
+          formControlName="telefono"
+          type="text"
+          placeholder="Ej: 3001234567"
+          maxlength="15"
+          (keypress)="soloNumeros($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+        />
+        <p *ngIf="form.get('telefono')?.touched && form.get('telefono')?.invalid"
+           class="text-red-500 text-sm mt-1">Campo obligatorio (mínimo 7 dígitos)</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+        <input
+          formControlName="correo"
+          type="email"
+          placeholder="Ej: ejemplo@correo.com"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+        />
+        <p *ngIf="form.get('correo')?.touched && form.get('correo')?.invalid"
+           class="text-red-500 text-sm mt-1">Debe ser un correo válido</p>
+      </div>
+    </div>
+
+    <!-- Bloque/Torre y Apto/Casa -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Bloque o Torre</label>
+        <input formControlName="bloqueTorre" type="text" 
+          maxlength="50"
+          (keypress)="alfanumerico($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Apto o Casa</label>
+        <input formControlName="aptoCasa" type="text" 
+          maxlength="50"
+          (keypress)="alfanumerico($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+    </div>
+  </form>
+
+  <div class="mt-6 flex justify-end">
+    <button (click)="guardarSeccion()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow">
+      Guardar
+    </button>
+  </div>
+</div>

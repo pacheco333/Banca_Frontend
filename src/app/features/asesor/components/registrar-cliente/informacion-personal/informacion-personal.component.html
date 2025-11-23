@@ -1,0 +1,219 @@
+<div class="p-6 max-w-7xl mx-auto bg-white shadow-sm rounded-lg border border-gray-200">
+  <form [formGroup]="form" class="space-y-6">
+
+    <!-- Primer Nombre y Segundo Nombre -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Primer nombre</label>
+        <input formControlName="primerNombre" type="text" placeholder="Charlene Reed"
+          maxlength="50"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Segundo nombre</label>
+        <input formControlName="segundoNombre" type="text" placeholder="Charlene Reed"
+          maxlength="50"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+    </div>
+
+    <!-- Primer Apellido y Segundo Apellido -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Primer apellido</label>
+        <input formControlName="primerApellido" type="text" placeholder="Charlene Reed"
+          maxlength="50"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Segundo apellido</label>
+        <input formControlName="segundoApellido" type="text" placeholder="Charlene Reed"
+          maxlength="50"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+    </div>
+
+    <!-- Línea separadora -->
+    <hr class="border-t border-gray-300">
+
+    <!-- Tipo de Documento y Número de Documento -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de documento</label>
+        <div class="grid grid-cols-4 gap-3">
+          <label class="flex items-center">
+            <input type="radio" formControlName="tipoDocumento" value="CC" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">C.C.</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" formControlName="tipoDocumento" value="TI" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">T.I.</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" formControlName="tipoDocumento" value="R.Civil" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">R.Civil</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" formControlName="tipoDocumento" value="PPT" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">PPT</span>
+          </label>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mt-2">
+          <label class="flex items-center">
+            <input type="radio" formControlName="tipoDocumento" value="Pasaporte" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Pasaporte</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" formControlName="tipoDocumento" value="CarneDiplomatico" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Carné diplomático</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" formControlName="tipoDocumento" value="CedulaExtranjeria" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Cedula de extranjería</span>
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Número de documento</label>
+        <input formControlName="numeroDocumento" type="text" placeholder="1110114641"
+          maxlength="20"
+          (keypress)="soloNumeros($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition" />
+      </div>
+    </div>
+
+    <!-- Lugar de Expedición y Fecha de Expedición -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Lugar de expedición</label>
+        <input formControlName="lugarExpedicion" type="text"
+          maxlength="100"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de expedición</label>
+        <input formControlName="fechaExpedicion" type="date"
+          [max]="fechaHoy"
+          class="w-full border border-gray-300 rounded-lg p-2.5" />
+      </div>
+    </div>
+
+    <!-- Línea separadora -->
+    <hr class="border-t border-gray-300">
+
+    <!-- Ciudad de nacimiento y Nacionalidad -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ciudad de nacimiento</label>
+        <input formControlName="ciudadNacimiento" type="text"
+          maxlength="100"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5" />
+      </div>
+
+      <div>
+        <!-- Nacionalidad -->
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nacionalidad</label>
+        <div class="flex gap-3 flex-wrap items-center">
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="nacionalidad" value="Colombiano" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Colombiano</span>
+          </label>
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="nacionalidad" value="Estadounidense" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Estadounidense</span>
+          </label>
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="nacionalidad" value="Otra" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Otra, ¿Cuál?</span>
+          </label>
+          <input formControlName="otraNacionalidad" type="text"
+            maxlength="100"
+            (keypress)="soloLetras($event)"
+            class="flex-1 min-w-[200px] border border-gray-300 rounded-lg p-2.5" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Fecha de nacimiento, Género y Estado civil -->
+    <div class="grid grid-cols-2 gap-6">
+      <!-- Columna izquierda: Fecha de nacimiento y Género -->
+      <div class="grid grid-cols-2 gap-6">
+        <!-- Fecha de nacimiento -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de nacimiento</label>
+          <input formControlName="fechaNacimiento" type="date"
+            [max]="fechaHoy"
+            class="w-full border border-gray-300 rounded-lg p-2.5" />
+        </div>
+        <!-- Género -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Género</label>
+          <div class="flex gap-6">
+            <label class="flex items-center">
+              <input type="radio" formControlName="genero" value="F" class="w-4 h-4 accent-gray-800">
+              <span class="ml-2 text-sm">F</span>
+            </label>
+            <label class="flex items-center">
+              <input type="radio" formControlName="genero" value="M" class="w-4 h-4 accent-gray-800">
+              <span class="ml-2 text-sm">M</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- Columna derecha: Estado civil (alineado con Nacionalidad) -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Estado civil</label>
+        <div class="flex gap-3 flex-wrap items-center">
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="estadoCivil" value="Soltero" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Soltero</span>
+          </label>
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="estadoCivil" value="Casado" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Casado</span>
+          </label>
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="estadoCivil" value="UnionLibre" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Unión libre</span>
+          </label>
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="estadoCivil" value="Divorciado" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Divorciado</span>
+          </label>
+          <label class="flex items-center whitespace-nowrap">
+            <input type="radio" formControlName="estadoCivil" value="Viudo" class="w-4 h-4 accent-gray-800">
+            <span class="ml-2 text-sm">Viudo</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Grupo Étnico -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Grupo étnico</label>
+      <div class="grid grid-cols-6 gap-6">
+        <label class="flex items-center"><input type="radio" formControlName="grupoEtnico" value="Indígena" class="w-4 h-4"><span class="ml-2">Indígena</span></label>
+        <label class="flex items-center"><input type="radio" formControlName="grupoEtnico" value="Gitano" class="w-4 h-4"><span class="ml-2">Gitano o Rom</span></label>
+        <label class="flex items-center"><input type="radio" formControlName="grupoEtnico" value="Raizal" class="w-4 h-4"><span class="ml-2">Raizal</span></label>
+        <label class="flex items-center"><input type="radio" formControlName="grupoEtnico" value="Palenquero" class="w-4 h-4"><span class="ml-2">Palenquero</span></label>
+        <label class="flex items-center"><input type="radio" formControlName="grupoEtnico" value="Afrocolombiano" class="w-4 h-4"><span class="ml-2">Comunidad negra o afrocolombiana</span></label>
+        <label class="flex items-center"><input type="radio" formControlName="grupoEtnico" value="Ninguna" class="w-4 h-4"><span class="ml-2">Ninguna</span></label>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="mt-8 flex justify-end">
+    <button (click)="guardarSeccion()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-lg font-medium">
+      Guardar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-informacion-laboral',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './informacion-laboral.component.html',
+})
+export class InformacionLaboralComponent {
+  // 🧠 Formulario reactivo
+  form: FormGroup;
+
+  // 📤 Emisores hacia el componente padre
+  @Output() formChange = new EventEmitter<any>();
+  // @Output() nextTab = new EventEmitter<void>();
+
+  constructor(private fb: FormBuilder) { 
+    // ✅ Inicializamos el formulario con validaciones completas
+    this.form = this.fb.group({
+      nombreEmpresa: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(200)
+      ]],
+      direccionEmpresa: ['', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(200)
+      ]],
+      paisEmpresa: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+      ]],
+      departamentoEmpresa: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+      ]],
+      ciudadEmpresa: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+      ]],
+      telefonoEmpresa: ['', [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(15),
+        Validators.pattern(/^[0-9]+$/)
+      ]],
+      ext: ['', [
+        Validators.minLength(1),
+        Validators.maxLength(10),
+        Validators.pattern(/^[0-9]*$/)
+      ]],
+      celularEmpresa: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(15),
+        Validators.pattern(/^[0-9]+$/)
+      ]],
+      correoLaboral: ['', [
+        Validators.required,
+        Validators.email,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+      ]],
+    });
+
+    // 🔁 Emitir cambios válidos al padre automáticamente
+    // this.form.valueChanges.subscribe(() => {
+    //   if (this.form.valid) {
+    //     this.formChange.emit(this.form.value);
+    //   }
+    // });
+  }
+   guardarSeccion() {
+    if (this.form.valid) {
+      this.formChange.emit(this.form.value);
+      // this.nextTab.emit();
+      alert('✅ Datos personales guardados correctamente');
+    } else {
+      this.form.markAllAsTouched();
+      alert('Por favor completa todos los campos obligatorios.');
+    }
+  }
+
+  // 🔒 Método para permitir solo letras y espacios
+  soloLetras(event: KeyboardEvent) {
+    const pattern = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/;
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  // 🔒 Método para permitir solo números
+  soloNumeros(event: KeyboardEvent) {
+    const pattern = /^[0-9]$/;
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  // 💾 Guardar sección y avanzar
+  // guardarSeccion(): void {
+  //   if (this.form.valid) {
+  //     this.formChange.emit(this.form.value);
+  //     this.nextTab.emit();
+  //     alert('Sección de Información Laboral guardada correctamente ✅');
+  //   } else {
+  //     this.form.markAllAsTouched();
+  //     alert('Por favor complete todos los campos obligatorios ⚠️');
+  //   }
+  // }
+}
+
+// import { Component, EventEmitter, Output } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+// @Component({
+//   selector: 'app-informacion-laboral',
+//   standalone: true,
+//   imports: [CommonModule, ReactiveFormsModule],
+//   templateUrl: './informacion-laboral.component.html',
+// })
+// export class InformacionLaboralComponent {
+  
+//   form: FormGroup;
+
+//   // 📤 Emisor de los datos al componente padre
+//   @Output() formChange = new EventEmitter<any>();
+
+//   constructor(private fb: FormBuilder) { 
+//     // ✅ Inicializamos el formulario con validaciones básicas
+//     this.form = this.fb.group({
+//       nombreEmpresa: ['', Validators.required],
+//       direccionEmpresa: ['', Validators.required],
+//       paisEmpresa: ['', Validators.required],
+//       departamentoEmpresa: ['', Validators.required],
+//       ciudadEmpresa: ['', Validators.required],
+//       telefonoEmpresa: ['', [Validators.required, Validators.minLength(7)]],
+//       ext: [''],
+//       celularEmpresa: ['', [Validators.required, Validators.minLength(10)]],
+//       correoLaboral: ['', [Validators.required, Validators.email]],
+//     });
+
+//     // 🔁 Emitir cambios válidos al padre automáticamente
+//     this.form.valueChanges.subscribe((val) => {
+//       if (this.form.valid) {
+//         this.formChange.emit(this.form.value);
+//       }
+//     });
+//   }
+// }

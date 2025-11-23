@@ -1,0 +1,96 @@
+<div class="p-6 max-w-7xl mx-auto bg-white shadow-sm rounded-lg border border-gray-200">
+  <form [formGroup]="form" class="space-y-6">
+
+    <!-- Profesión y Ocupación -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Profesión</label>
+        <input
+          formControlName="profesion"
+          type="text"
+          placeholder="Ej: Ingeniero, Contador..."
+          maxlength="100"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+        />
+        <p *ngIf="form.get('profesion')?.touched && form.get('profesion')?.invalid"
+           class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Ocupación</label>
+        <input
+          formControlName="ocupacion"
+          type="text"
+          placeholder="Ej: Empleado, Independiente..."
+          maxlength="100"
+          (keypress)="soloLetras($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+        />
+        <p *ngIf="form.get('ocupacion')?.touched && form.get('ocupacion')?.invalid"
+           class="text-red-500 text-sm mt-1">Campo obligatorio</p>
+      </div>
+    </div>
+
+    <!-- Código CIIU y Detalle de la actividad -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Código CIIU</label>
+        <input
+          formControlName="codigoCiiu"
+          type="text"
+          placeholder="Ej: 6201"
+          maxlength="6"
+          (keypress)="soloNumeros($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Detalle de la Actividad</label>
+        <input
+          formControlName="detalleActividad"
+          type="text"
+          placeholder="Ej: Consultoría en software"
+          maxlength="500"
+          (keypress)="alfanumerico($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+        />
+      </div>
+    </div>
+
+    <!-- Número de empleados y FACTA/CRS -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Número de Empleados</label>
+        <input
+          formControlName="numeroEmpleados"
+          type="number"
+          min="0"
+          max="999999"
+          (keypress)="soloNumeros($event)"
+          class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition"
+        />
+        <p *ngIf="form.get('numeroEmpleados')?.touched && form.get('numeroEmpleados')?.invalid"
+           class="text-red-500 text-sm mt-1">Debe ser un número igual o mayor a 0</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">¿Aplica FACTA/CRS?</label>
+        <div class="flex gap-6">
+          <label class="flex items-center">
+            <input type="radio" formControlName="factaCrs" [value]="true" class="w-4 h-4 accent-gray-800" />
+            <span class="ml-2 text-sm">Sí</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" formControlName="factaCrs" [value]="false" class="w-4 h-4 accent-gray-800" />
+            <span class="ml-2 text-sm">No</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="mt-6 flex justify-end">
+    <button (click)="guardarSeccion()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow">
+      Guardar
+    </button>
+  </div>
+</div>

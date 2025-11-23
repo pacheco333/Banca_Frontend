@@ -1,0 +1,104 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <!--  Navegación -->
+  <div class="flex justify-center mb-8 border-b border-gray-200">
+    <button
+      class="px-6 py-3 font-medium text-sm transition-colors relative"
+      [class.text-blue-600]="pestanaActiva === 'datos-personales'"
+      [class.border-b-2]="pestanaActiva === 'datos-personales'"
+      [class.border-blue-600]="pestanaActiva === 'datos-personales'"
+      [class.text-gray-500]="pestanaActiva !== 'datos-personales'"
+      (click)="cambiarPestana('datos-personales')"
+    >
+      Información Personal
+    </button>
+
+    <button
+      class="px-6 py-3 font-medium text-sm transition-colors relative"
+      [class.text-blue-600]="pestanaActiva === 'contacto-personal'"
+      [class.border-b-2]="pestanaActiva === 'contacto-personal'"
+      [class.border-blue-600]="pestanaActiva === 'contacto-personal'"
+      [class.text-gray-500]="pestanaActiva !== 'contacto-personal'"
+      (click)="cambiarPestana('contacto-personal')"
+    >
+      Contacto y Actividad
+    </button>
+
+    <button
+      class="px-6 py-3 font-medium text-sm transition-colors relative"
+      [class.text-blue-600]="pestanaActiva === 'info-laboral'"
+      [class.border-b-2]="pestanaActiva === 'info-laboral'"
+      [class.border-blue-600]="pestanaActiva === 'info-laboral'"
+      [class.text-gray-500]="pestanaActiva !== 'info-laboral'"
+      (click)="cambiarPestana('info-laboral')"
+    >
+      Laboral y Financiera
+    </button>
+
+    <button
+      class="px-6 py-3 font-medium text-sm transition-colors relative"
+      [class.text-blue-600]="pestanaActiva === 'facta'"
+      [class.border-b-2]="pestanaActiva === 'facta'"
+      [class.border-blue-600]="pestanaActiva === 'facta'"
+      [class.text-gray-500]="pestanaActiva !== 'facta'"
+      (click)="cambiarPestana('facta')"
+    >
+      FACTCA y CRS
+    </button>
+  </div>
+
+  <!--  Contenido de pestañas -->
+  <div class="space-y-6">
+    <!-- Pestaña 1 -->
+    <div *ngIf="pestanaActiva === 'datos-personales'">
+      <app-informacion-personal
+        (formChange)="actualizarDatos('datosPersonales', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-informacion-personal>
+    </div>
+
+    <!-- Pestaña 2 -->
+    <div *ngIf="pestanaActiva === 'contacto-personal'" class="space-y-6">
+      <app-contacto-personal
+        (formChange)="actualizarDatos('contacto', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-contacto-personal>
+
+      <app-actividad-economica
+        (formChange)="actualizarDatos('actividad', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-actividad-economica>
+    </div>
+
+    <!-- Pestaña 3 -->
+    <div *ngIf="pestanaActiva === 'info-laboral'" class="space-y-6">
+      <app-informacion-laboral
+        (formChange)="actualizarDatos('laboral', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-informacion-laboral>
+
+      <app-informacion-financiera
+        (formChange)="actualizarDatos('financiera', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-informacion-financiera>
+    </div>
+
+    <!-- Pestaña 4 -->
+    <div *ngIf="pestanaActiva === 'facta'" class="space-y-6">
+      <app-facta
+        (formChange)="actualizarDatos('facta', $event)"
+        (nextTab)="manejarNextTab()"
+      ></app-facta>
+
+      <!--  Solo se muestra aquí -->
+      <div class="text-center mt-8">
+        <button
+          (click)="registrarCliente()"
+          [disabled]="!datosCompletos()"
+          class="bg-green-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-green-700 transition-all shadow-md disabled:bg-gray-300"
+        >
+          Registrar Cliente 
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

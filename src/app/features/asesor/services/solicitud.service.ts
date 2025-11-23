@@ -23,18 +23,12 @@ export class SolicitudService {
     });
   }
 
-  /**
-   * Enviar solicitud de producto
-   * Incluye automáticamente el id_usuario_rol del usuario autenticado
-   */
+  
   enviarSolicitud(solicitud: any): Observable<any> {
     const formData = new FormData();
     formData.append('cedula', solicitud.cedula);
     formData.append('producto', solicitud.producto);
     formData.append('comentario', solicitud.comentario || '');
-    
-    // El token JWT ya incluye el id_usuario y el rol
-    // El backend extraerá esta información del token
     
     if (solicitud.archivo) {
       formData.append('archivo', solicitud.archivo, solicitud.archivo.name);

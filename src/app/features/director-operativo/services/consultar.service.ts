@@ -1,57 +1,51 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-export interface Solicitud {
-  codigo: string;
-  id: string;
+export interface SolicitudConsulta {
+  id_solicitud: number;
+  id_asesor: number;
   cedula: string;
   fecha: string;
-  estado: 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
+  estado: 'Pendiente' | 'Aprobada' | 'Rechazada' | 'Devuelta';
   producto: string;
-  valor: number;
+  comentario_director?: string;
+  comentario_asesor?: string;
+  nombre_completo: string;
+}
+
+export interface ConsultarResponse {
+  success: boolean;
+  message: string;
+  data: SolicitudConsulta[];
+}
+
+export interface DetalleResponse {
+  success: boolean;
+  message: string;
+  data: SolicitudConsulta;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class DirectorOperativo {
-  private solicitudes: Solicitud[] = [
-    {
-      codigo: '1',
-      id: '1',
-      cedula: '12345678',
-      fecha: '01/08/2025',
-      estado: 'PENDIENTE',
-      producto: 'Cuenta de ahorros',
-      valor: 0
-    },
-    {
-      codigo: '2',
-      id: '2',
-      cedula: '87654321',
-      fecha: '02/08/2025',
-      estado: 'APROBADO',
-      producto: 'Cuenta de ahorros',
-      valor: 0
-    },
-    {
-      codigo: '3',
-      id: '3',
-      cedula: '11223344',
-      fecha: '03/08/2025',
-      estado: 'RECHAZADO',
-      producto: 'Cuenta de ahorros',
-      valor: 0
-    }
-  ];
+export class ConsultarService {
+  private apiUrl = 'http://localhost:3000/api/director';
 
-  obtenerSolicitudesRecientes(): Solicitud[] {
-    return this.solicitudes;
+  constructor(private http: HttpClient) {}
+
+  buscarPorAsesor(id_usuario_rol: string): Observable<ConsultarResponse> {
+    return this.http.get<ConsultarResponse>(`${this.apiUrl}/solicitudes/asesor/${id_usuario_rol}`);
   }
 
-  buscarPorAsesor(codigoAsesor: string): Solicitud[] {
-    return this.solicitudes.filter(s => 
-      s.codigo.includes(codigoAsesor) || 
-      s.cedula.includes(codigoAsesor)
-    );
+  obtenerDetalle(id_solicitud: number): Observable<DetalleResponse> {
+    return this.http.get<DetalleResponse>(`${this.apiUrl}/solicitudes/${id_solicitud}`);
+  }
+
+  obtenerTodasSolicitudes(estado?: string): Observable<ConsultarResponse> {
+    const url = estado 
+      ? `${this.apiUrl}/solicitudes?estado=${estado}` 
+      : `${this.apiUrl}/solicitudes`;
+    return this.http.get<ConsultarResponse>(url);
   }
 }

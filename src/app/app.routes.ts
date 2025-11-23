@@ -4,20 +4,14 @@ import { roleGuard } from './core/guards/role.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/auth/login',
     pathMatch: 'full'
   },
   {
-    path: 'login',
+    path: 'auth',
     loadChildren: () =>
-      import('./features/login/login.routes').then(m => m.LOGIN_ROUTES)
+      import('./auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
-  {
-    path: 'registro',
-    loadChildren: () =>
-      import('./features/registro/registro.routes').then(m => m.REGISTRO_ROUTES)
-  },
-  
   {
     path: 'asesor',
     loadChildren: () =>
@@ -34,9 +28,22 @@ export const routes: Routes = [
     canActivate: [roleGuard],
     data: { role: 'Director-operativo' }
   },
-  
+   {
+    path: 'cajero',
+    loadChildren: () =>
+      import('./features/cajero/cajero.routes').then(m => m.CAJERO_ROUTES),
+    canActivate: [roleGuard],
+    data: { role: 'Cajero' }
+  },
+   {
+    path: 'cajero',
+    loadChildren: () =>
+      import('./features/cajero/cajero.routes').then(m => m.CAJERO_ROUTES),
+    canActivate: [roleGuard],
+    data: { role: 'Cajero' }
+  },
   {
     path: '**',
-    redirectTo: '/login'
+    redirectTo: '/auth/login'
   }
 ];

@@ -14,9 +14,17 @@ export const DIRECTOR_OPERATIVO_ROUTES: Routes = [
       {
         path: 'consultar-solicitudes',
         loadComponent: () =>
-          import('./components/consultar-solicitudes/consultar-solicitudes.component').then(
-            (m) => m.ConsultarSolicitudes
+          import('./components/solicitudes-radicadas/consultar-solicitudes.component').then(
+            (m) => m.ConsultarSolicitudesComponent
           ),
+      }
+      ,
+      {
+        path: 'solicitud/:id',
+        loadComponent: () =>
+          import('./components/solicitudes-radicadas/solicitud-cliente/solicitud-cliente.component').then(
+            (m) => m.SolicitudClienteComponent
+          )
       }
     ]
   }
