@@ -6,7 +6,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class AsesorService {
-  private apiUrl = 'https://banca-backend-1.onrender.com/api/asesor'; // Ajusta si tu backend usa otro prefijo
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/'; // Ajusta si tu backend usa otro prefijo
 
   // 🧠 Estado temporal del cliente (vive en memoria)
   private clienteDataSubject = new BehaviorSubject<any>({
