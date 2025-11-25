@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SaldoCajeroService {
-  private apiUrl = 'http://localhost:3000/api/cajero';
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/cajero';
 
   constructor(private http: HttpClient) { }
 

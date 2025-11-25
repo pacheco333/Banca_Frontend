@@ -54,7 +54,7 @@ export interface AceptarTrasladoResponse {
   providedIn: 'root'
 })
 export class TrasladoService {
-  private apiUrl = 'http://localhost:3000/api/cajero/traslado';
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/cajero/traslado';
 
   constructor(private http: HttpClient) {}
 

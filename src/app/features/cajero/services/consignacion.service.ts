@@ -32,7 +32,7 @@ export interface ProcesarConsignacionResponse {
   providedIn: 'root'
 })
 export class ConsignacionService {
-  private apiUrl = 'http://localhost:3000/api/cajero/consignacion';
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/cajero/consignacion';
 
   constructor(private http: HttpClient) {}
 

@@ -42,7 +42,7 @@ export interface ProcesarRetiroResponse {
   providedIn: 'root'
 })
 export class RetiroService {
-  private apiUrl = 'http://localhost:3000/api/cajero/retiro';
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/cajero/retiro';
 
   constructor(private http: HttpClient) {}
 

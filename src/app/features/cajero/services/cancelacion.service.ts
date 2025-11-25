@@ -26,7 +26,7 @@ export interface CancelarCuentaResponse {
   providedIn: 'root'
 })
 export class CancelacionService {
-  private apiUrl = 'http://localhost:3000/api/cajero/cancelacion';
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/cajero/cancelacion';
 
   constructor(private http: HttpClient) {}
 

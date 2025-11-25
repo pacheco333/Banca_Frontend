@@ -37,7 +37,7 @@ export interface AperturarCuentaResponse {
   providedIn: 'root'
 })
 export class AperturaService {
-  private apiUrl = 'http://localhost:3000/api/cajero/apertura';
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/cajero/apertura';
 
   constructor(private http: HttpClient) {}
 
