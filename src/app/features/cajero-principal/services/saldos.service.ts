@@ -27,7 +27,7 @@ export interface CajeroDetalle {
   providedIn: 'root'
 })
 export class SaldosCajerosService {
-  private apiUrl = 'http://localhost:3000/api/saldos';
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/saldos'; // Misma base que saldos
 
   constructor(private http: HttpClient) {}
 
