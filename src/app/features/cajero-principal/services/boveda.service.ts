@@ -12,7 +12,7 @@ export interface SaldoBovedaResponse {
   providedIn: 'root'
 })
 export class BovedaService {
-  private apiUrl = 'http://localhost:3000/api/cajero-principal'; // Misma base que saldos
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/saldos'; // Misma base que saldos
 
   constructor(private http: HttpClient) {}
 
