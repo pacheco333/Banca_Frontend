@@ -31,6 +31,8 @@ export class SaldosCajerosComponent implements OnInit {
           // Asegurar que los valores numéricos sean realmente números
           this.cajeros = (response.cajeros || []).map((c: CajeroDetalle) => ({
             ...c,
+            // Normalizar nombre del cajero por si el backend usa snake_case u otra clave
+            nombreCajero: (c as any).nombreCajero || (c as any).nombre_cajero || (c as any).cajero || '',
             saldoEfectivo: Number((c as any).saldoEfectivo) || 0,
             transaccionesHoy: Number((c as any).transaccionesHoy) || 0,
             dineroDepositado: Number((c as any).dineroDepositado) || 0,
