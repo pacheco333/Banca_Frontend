@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,14 +8,15 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './informacion-personal.component.html',
 })
-export class InformacionPersonalComponent {
+export class InformacionPersonalComponent implements OnInit {
+
+  // 📤 Emitir datos al padre solo cuando se presione "Guardar"
+  @Input() datosIniciales: any; // ← AGREGAR ESTO para modo edición
+  @Output() formChange = new EventEmitter<any>();
+  @Output() nextTab = new EventEmitter<void>();
 
   form: FormGroup;
   fechaHoy: string;
-
-  // 📤 Emitir datos al padre solo cuando se presione "Guardar"
-  @Output() formChange = new EventEmitter<any>();
-  @Output() nextTab = new EventEmitter<void>();
 
   constructor(private fb: FormBuilder) {
     // Obtener fecha de hoy para limitar fechas futuras
@@ -79,6 +80,13 @@ export class InformacionPersonalComponent {
     this.form.get('fechaNacimiento')?.valueChanges.subscribe(() => {
       this.form.get('fechaExpedicion')?.updateValueAndValidity();
     });
+  }
+  ngOnInit() {
+    // ← AGREGAR ESTE MÉTODO para cargar datos iniciales
+    if (this.datosIniciales) {
+      console.log('📥 Cargando datos iniciales en Información Personal:', this.datosIniciales);
+      this.form.patchValue(this.datosIniciales);
+    }
   }
 
   // Validador para fecha no futura

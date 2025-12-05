@@ -56,4 +56,18 @@ export class AsesorService {
   registrarCliente(payload: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/asesor/registrar-cliente`, payload);
   }
+  // 🔹 Obtener cliente completo por ID (para edición)
+  obtenerClientePorId(idCliente: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/asesor/cliente-id/${idCliente}`);
+  }
+
+  // 🔹 Actualizar cliente existente
+  actualizarCliente(idCliente: number, payload: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/asesor/actualizar-cliente/${idCliente}`, payload);
+  }
+
+  // 🔹 Obtener solo los datos básicos (para mostrar en búsqueda)
+  obtenerClienteBasico(idCliente: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/asesor/cliente-basico/${idCliente}`);
+  }
 }

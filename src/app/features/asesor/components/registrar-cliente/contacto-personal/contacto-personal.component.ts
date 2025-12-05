@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,10 +8,11 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contacto-personal.component.html',
 })
-export class ContactoPersonalComponent {
+export class ContactoPersonalComponent implements OnInit {
   form: FormGroup;
 
   // 📤 Emite los datos al padre cuando se guarda
+  @Input() datosIniciales: any; // ← AGREGAR ESTO
   @Output() formChange = new EventEmitter<any>();
 
   // // 📤 Pide avanzar a la siguiente pestaña
@@ -69,6 +70,13 @@ export class ContactoPersonalComponent {
       ]],
     });
   }
+  ngOnInit() {
+    // ← AGREGAR ESTE MÉTODO
+    if (this.datosIniciales) {
+      console.log('📥 Cargando datos iniciales en Contacto Personal:', this.datosIniciales);
+      this.form.patchValue(this.datosIniciales);
+    }
+  }
 
   // 💾 Guarda la sección y notifica al padre
   guardarSeccion() {
@@ -111,43 +119,3 @@ export class ContactoPersonalComponent {
 }
 
 
-
-// import { Component, EventEmitter, Output } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-// @Component({
-//   selector: 'app-contacto-personal',
-//   standalone: true,
-//   imports: [CommonModule, ReactiveFormsModule],
-//   templateUrl: './contacto-personal.component.html',
-// })
-// export class ContactoPersonalComponent {
-//   // 🧠 Formulario reactivo
-//   form: FormGroup;
-
-//   // 📤 Emite los cambios hacia el componente padre (registrar-cliente)
-//   @Output() formChange = new EventEmitter<any>();
-
-//   constructor(private fb: FormBuilder) {
-//     // ✅ Inicializamos el formulario con validaciones básicas
-//     this.form = this.fb.group({
-//       direccion: ['', Validators.required],
-//       barrio: [''],
-//       departamento: ['', Validators.required],
-//       ciudad: ['', Validators.required],
-//       pais: ['', Validators.required],
-//       telefono: ['', [Validators.required, Validators.minLength(7)]],
-//       correo: ['', [Validators.required, Validators.email]],
-//       bloqueTorre: [''],
-//       aptoCasa: [''],
-//     });
-
-//     // 🔁 Emite los datos al padre cada vez que el formulario es válido
-//     this.form.valueChanges.subscribe((value) => {
-//       if (this.form.valid) {
-//         this.formChange.emit(this.form.value);
-//       }
-//     });
-//   }
-// }

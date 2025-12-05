@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,11 +8,12 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './informacion-factca.component.html',
 })
-export class FactaComponent {
+export class FactaComponent implements OnInit {
   // 🧠 Formulario reactivo FACTA/CRS
   form: FormGroup;
 
   // 📤 Emisores hacia el componente padre
+  @Input() datosIniciales: any;
   @Output() formChange = new EventEmitter<any>();
   @Output() nextTab = new EventEmitter<void>();
 
@@ -38,6 +39,13 @@ export class FactaComponent {
       }
       paisControl?.updateValueAndValidity();
     });
+  }
+   ngOnInit() {
+    // ← AGREGAR ESTE MÉTODO para cargar datos iniciales
+    if (this.datosIniciales) {
+      console.log('📥 Cargando datos iniciales en Información Personal:', this.datosIniciales);
+      this.form.patchValue(this.datosIniciales);
+    }
   }
 
   // 💾 Guardar sección y avanzar

@@ -26,6 +26,14 @@ export const ASESOR_ROUTES: Routes = [
           ),
       },
       {
+        path: 'editar-cliente/:id', // ← NUEVA RUTA PARA EDICIÓN
+        loadComponent: () =>
+          import('./components/registrar-cliente/registrar-cliente.component').then(
+            (m) => m.RegistrarClienteComponent
+          ),
+      },
+
+      {
         path: 'solicitar-producto',
         loadComponent: () =>
           import('./components/solicitar-producto/solicitar-producto.component').then(

@@ -51,6 +51,7 @@
     <!-- Pestaña 1 -->
     <div *ngIf="pestanaActiva === 'datos-personales'">
       <app-informacion-personal
+        [datosIniciales]="obtenerDatosIniciales('datosPersonales')" 
         (formChange)="actualizarDatos('datosPersonales', $event)"
         (nextTab)="manejarNextTab()"
       ></app-informacion-personal>
@@ -59,11 +60,13 @@
     <!-- Pestaña 2 -->
     <div *ngIf="pestanaActiva === 'contacto-personal'" class="space-y-6">
       <app-contacto-personal
+        [datosIniciales]="obtenerDatosIniciales('contacto')"
         (formChange)="actualizarDatos('contacto', $event)"
         (nextTab)="manejarNextTab()"
       ></app-contacto-personal>
 
       <app-actividad-economica
+        [datosIniciales]="obtenerDatosIniciales('actividad')"
         (formChange)="actualizarDatos('actividad', $event)"
         (nextTab)="manejarNextTab()"
       ></app-actividad-economica>
@@ -72,11 +75,13 @@
     <!-- Pestaña 3 -->
     <div *ngIf="pestanaActiva === 'info-laboral'" class="space-y-6">
       <app-informacion-laboral
+        [datosIniciales]="obtenerDatosIniciales('laboral')"
         (formChange)="actualizarDatos('laboral', $event)"
         (nextTab)="manejarNextTab()"
       ></app-informacion-laboral>
 
       <app-informacion-financiera
+        [datosIniciales]="obtenerDatosIniciales('financiera')"
         (formChange)="actualizarDatos('financiera', $event)"
         (nextTab)="manejarNextTab()"
       ></app-informacion-financiera>
@@ -85,20 +90,33 @@
     <!-- Pestaña 4 -->
     <div *ngIf="pestanaActiva === 'facta'" class="space-y-6">
       <app-facta
+        [datosIniciales]="obtenerDatosIniciales('facta')"
         (formChange)="actualizarDatos('facta', $event)"
         (nextTab)="manejarNextTab()"
       ></app-facta>
 
-      <!--  Solo se muestra aquí -->
-      <div class="text-center mt-8">
-        <button
-          (click)="registrarCliente()"
-          [disabled]="!datosCompletos()"
-          class="bg-green-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-green-700 transition-all shadow-md disabled:bg-gray-300"
-        >
-          Registrar Cliente 
-        </button>
-      </div>
+     <!-- Botón de Registrar/Actualizar -->
+    <div class="text-center mt-8">
+    <button
+      (click)="registrarCliente()"
+      [disabled]="!datosCompletos()"
+      class="px-8 py-3 font-semibold rounded-lg shadow-md transition-all"
+      [class]="modo === 'nuevo' 
+        ? 'bg-green-600 hover:bg-green-700 text-white disabled:bg-gray-300'
+        : 'bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-300'"
+    >
+      {{ modo === 'nuevo' ? '📋 Registrar Cliente' : '💾 Actualizar Cliente' }}
+    </button>
+    
+    <!-- Botón para cancelar edición -->
+    <button
+      *ngIf="modo === 'editar'"
+      (click)="cancelarEdicion()"
+      class="ml-4 px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-lg transition-colors"
+    >
+      Cancelar
+    </button>
+  </div>  
     </div>
   </div>
 </div>

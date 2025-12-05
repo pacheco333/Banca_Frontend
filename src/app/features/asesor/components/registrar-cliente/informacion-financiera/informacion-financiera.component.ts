@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -8,11 +8,12 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './informacion-financiera.component.html',
 })
-export class InformacionFinancieraComponent {
+export class InformacionFinancieraComponent implements OnInit {
   // 🧠 Formulario reactivo
   form: FormGroup;
 
   // 📤 Emisores hacia el componente padre
+  @Input() datosIniciales: any; // ← AGREGAR ESTO para modo edición
   @Output() formChange = new EventEmitter<any>();
   @Output() nextTab = new EventEmitter<void>();
 
@@ -43,7 +44,15 @@ export class InformacionFinancieraComponent {
         Validators.max(999999999999),
         Validators.pattern(/^[0-9]+$/)
       ]],
-    });
+    }); 
+  }
+
+  ngOnInit() {
+    // ← AGREGAR ESTE MÉTODO para cargar datos iniciales
+    if (this.datosIniciales) {
+      console.log('📥 Cargando datos iniciales en Información Personal:', this.datosIniciales);
+      this.form.patchValue(this.datosIniciales);
+    }
 
     // 🔁 Escucha los cambios del formulario y los emite al padre
     // this.form.valueChanges.subscribe(() => {
@@ -71,50 +80,5 @@ export class InformacionFinancieraComponent {
       event.preventDefault();
     }
   }
-  // 💾 Guardar y avanzar
-  // guardarSeccion(): void {
-  //   if (this.form.valid) {
-  //     this.formChange.emit(this.form.value);
-  //     this.nextTab.emit();
-  //     alert('Sección de Información Financiera guardada correctamente ✅');
-  //   } else {
-  //     this.form.markAllAsTouched();
-  //     alert('Por favor complete los campos obligatorios ⚠️');
-  //   }
-  // }
 }
 
-// import { Component, EventEmitter, Output } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-// @Component({
-//   selector: 'app-informacion-financiera',
-//   standalone: true,
-//   imports: [CommonModule, ReactiveFormsModule],
-//   templateUrl: './informacion-financiera.component.html',
-// })
-// export class InformacionFinancieraComponent {
-//   // 🧠 Formulario reactivo
-//   form: FormGroup;
-
-//   // 📤 Emisor de datos al componente padre
-//   @Output() formChange = new EventEmitter<any>();
-
-//   constructor(private fb: FormBuilder) {
-//     // ✅ Inicialización del formulario con validaciones numéricas básicas
-//     this.form = this.fb.group({
-//       ingresosMensuales: [0, [Validators.required, Validators.min(0)]],
-//       egresosMensuales: [0, [Validators.required, Validators.min(0)]],
-//       totalActivos: [0, [Validators.required, Validators.min(0)]],
-//       totalPasivos: [0, [Validators.required, Validators.min(0)]],
-//     });
-
-//     // 🔁 Escucha los cambios del formulario y los emite al padre
-//     this.form.valueChanges.subscribe((value) => {
-//       if (this.form.valid) {
-//         this.formChange.emit(this.form.value);
-//       }
-//     });
-//   }
-// }
