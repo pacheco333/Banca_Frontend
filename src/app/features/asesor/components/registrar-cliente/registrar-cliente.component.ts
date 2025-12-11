@@ -56,6 +56,9 @@ export class RegistrarClienteComponent implements OnInit { // ← IMPLEMENTAR On
     facta: null,
   };
 
+  // 🧭 Cache de referencias estables para evitar recreación del binding
+  private datosInicialesCache: Map<string, any> = new Map();
+
   // Orden de las pestañas para moverse automáticamente
   ordenPestanas = [ // ← AÑADIR ESTA VARIABLE
     'datos-personales',
@@ -150,6 +153,8 @@ export class RegistrarClienteComponent implements OnInit { // ← IMPLEMENTAR On
   // 📥 Recibir datos desde los subcomponentes
   actualizarDatos(nombre: string, data: any) {
     this.clienteData[nombre] = data;
+    // Actualizar el cache con la nueva data para que sea consistente
+    this.datosInicialesCache.set(nombre, data);
     console.log(`✅ Datos actualizados (${nombre}):`, data);
   }
 
@@ -211,13 +216,23 @@ export class RegistrarClienteComponent implements OnInit { // ← IMPLEMENTAR On
 
   // Obtener datos iniciales para un subcomponente específico
   // Prioriza datos guardados temporalmente (clienteData) sobre datosIniciales
-  // Retorna una copia para que Angular detecte los cambios
+  // Retorna referencia ESTABLE (no copia) para evitar recreación del binding
   obtenerDatosIniciales(nombre: string): any {
     // Si hay datos guardados temporalmente, usarlos primero
     if (this.clienteData[nombre] && Object.keys(this.clienteData[nombre]).length > 0) {
-      return { ...this.clienteData[nombre] }; // Retornar copia
+      // Cachear y retornar la misma referencia para evitar re-render innecesario
+      if (!this.datosInicialesCache.has(nombre)) {
+        this.datosInicialesCache.set(nombre, this.clienteData[nombre]);
+      }
+      return this.datosInicialesCache.get(nombre);
     }
     // Si no, usar datosIniciales (modo edición)
-    return this.datosIniciales[nombre] ? { ...this.datosIniciales[nombre] } : null;
+    if (this.datosIniciales[nombre]) {
+      if (!this.datosInicialesCache.has(nombre)) {
+        this.datosInicialesCache.set(nombre, this.datosIniciales[nombre]);
+      }
+      return this.datosInicialesCache.get(nombre);
+    }
+    return null;
   }
 }
