@@ -78,6 +78,7 @@ export class InformacionLaboralComponent implements OnInit, OnChanges {
     if (this.datosIniciales) {
       console.log('📥 Cargando datos iniciales en Información Laboral:', this.datosIniciales);
       this.form.patchValue(this.datosIniciales);
+      this.form.enable(); // ✅ Habilitar formulario para edición
     }
 
     // 🔁 Emitir cambios válidos al padre automáticamente
@@ -94,6 +95,7 @@ export class InformacionLaboralComponent implements OnInit, OnChanges {
       if (this.datosIniciales) {
         console.log('🔄 Actualizando datos en Información Laboral:', this.datosIniciales);
         this.form.patchValue(this.datosIniciales);
+        this.form.enable(); // ✅ Habilitar formulario para edición cuando cambia de pestaña
       }
     }
   }

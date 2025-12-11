@@ -45,6 +45,7 @@ export class FactaComponent implements OnInit, OnChanges {
     if (this.datosIniciales) {
       console.log('📥 Cargando datos iniciales en FACTA/CRS:', this.datosIniciales);
       this.form.patchValue(this.datosIniciales);
+      this.form.enable(); // ✅ Habilitar formulario para edición
     }
   }
 
@@ -54,6 +55,7 @@ export class FactaComponent implements OnInit, OnChanges {
       if (this.datosIniciales) {
         console.log('🔄 Actualizando datos en FACTA/CRS:', this.datosIniciales);
         this.form.patchValue(this.datosIniciales);
+        this.form.enable(); // ✅ Habilitar formulario para edición cuando cambia de pestaña
       }
     }
   }

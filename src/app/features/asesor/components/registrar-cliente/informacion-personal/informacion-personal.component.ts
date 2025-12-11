@@ -86,6 +86,7 @@ export class InformacionPersonalComponent implements OnInit, OnChanges {
     if (this.datosIniciales) {
       console.log('📥 Cargando datos iniciales en Información Personal:', this.datosIniciales);
       this.form.patchValue(this.datosIniciales);
+      this.form.enable(); // ✅ Habilitar formulario para edición
     }
   }
 
@@ -95,6 +96,7 @@ export class InformacionPersonalComponent implements OnInit, OnChanges {
       if (this.datosIniciales) {
         console.log('🔄 Actualizando datos en Información Personal:', this.datosIniciales);
         this.form.patchValue(this.datosIniciales);
+        this.form.enable(); // ✅ Habilitar formulario para edición cuando cambia de pestaña
       }
     }
   }

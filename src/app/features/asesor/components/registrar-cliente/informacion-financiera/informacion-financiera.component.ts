@@ -52,6 +52,7 @@ export class InformacionFinancieraComponent implements OnInit, OnChanges {
     if (this.datosIniciales) {
       console.log('📥 Cargando datos iniciales en Información Financiera:', this.datosIniciales);
       this.form.patchValue(this.datosIniciales);
+      this.form.enable(); // ✅ Habilitar formulario para edición
     }
 
     // 🔁 Escucha los cambios del formulario y los emite al padre
@@ -68,6 +69,7 @@ export class InformacionFinancieraComponent implements OnInit, OnChanges {
       if (this.datosIniciales) {
         console.log('🔄 Actualizando datos en Información Financiera:', this.datosIniciales);
         this.form.patchValue(this.datosIniciales);
+        this.form.enable(); // ✅ Habilitar formulario para edición cuando cambia de pestaña
       }
     }
   }
