@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
-import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitudService {
-  private apiUrl = `${environment.apiUrl}/asesor`;
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/asesor';
 
   constructor(
     private http: HttpClient,

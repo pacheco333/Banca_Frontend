@@ -9,118 +9,76 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   templateUrl: './informacion-financiera.component.html',
 })
 export class InformacionFinancieraComponent implements OnInit {
+  // 🧠 Formulario reactivo
   form: FormGroup;
-  @Input() datosIniciales: any;
-  @Output() formChange = new EventEmitter();
-  @Output() nextTab = new EventEmitter();
+
+  // 📤 Emisores hacia el componente padre
+  @Input() datosIniciales: any; // ← AGREGAR ESTO para modo edición
+  @Output() formChange = new EventEmitter<any>();
+  @Output() nextTab = new EventEmitter<void>();
 
   constructor(private fb: FormBuilder) {
+    // ✅ Inicialización del formulario con validaciones numéricas completas
     this.form = this.fb.group({
-      ingresosMensuales: ['', [
+      ingresosMensuales: [null, [
         Validators.required,
         Validators.min(0),
         Validators.max(999999999999),
         Validators.pattern(/^[0-9]+$/)
       ]],
-      egresosMensuales: ['', [
+      egresosMensuales: [null, [
         Validators.required,
         Validators.min(0),
         Validators.max(999999999999),
         Validators.pattern(/^[0-9]+$/)
       ]],
-      totalActivos: ['', [
+      totalActivos: [null, [
         Validators.required,
         Validators.min(0),
         Validators.max(999999999999),
         Validators.pattern(/^[0-9]+$/)
       ]],
-      totalPasivos: ['', [
+      totalPasivos: [null, [
         Validators.required,
         Validators.min(0),
         Validators.max(999999999999),
         Validators.pattern(/^[0-9]+$/)
       ]],
-    });
+    }); 
   }
 
   ngOnInit() {
+    // ← AGREGAR ESTE MÉTODO para cargar datos iniciales
     if (this.datosIniciales) {
-      console.log('Cargando datos iniciales en Información Financiera:', this.datosIniciales);
+      console.log('📥 Cargando datos iniciales en Información Personal:', this.datosIniciales);
       this.form.patchValue(this.datosIniciales);
     }
 
-    // 🔄 AUTO-GUARDADO: Emitir datos al padre cada vez que cambie el formulario
-    this.form.valueChanges.subscribe(valores => {
-      this.formChange.emit(valores);
-      console.log('Auto-guardando información financiera...');
-    });
+    // 🔁 Escucha los cambios del formulario y los emite al padre
+    // this.form.valueChanges.subscribe(() => {
+    //   if (this.form.valid) {
+    //     this.formChange.emit(this.form.value);
+    //   }
+    // });
   }
-
-
-  guardarSeccion() {
+    guardarSeccion() {
     if (this.form.valid) {
       this.formChange.emit(this.form.value);
       this.nextTab.emit();
-      alert('✅ Datos financieros guardados correctamente');
+      console.log('✅ Datos personales guardados:', this.form.value);
     } else {
       this.form.markAllAsTouched();
-      const errores = this.obtenerErroresFormulario();
-      if (errores.length > 0) {
-        alert('⚠️ Por favor corrige los siguientes errores:\n\n' + errores.join('\n'));
-      } else {
-        alert('⚠️ Por favor completa todos los campos obligatorios.');
-      }
+      alert('Por favor completa todos los campos obligatorios.');
     }
   }
 
-  obtenerErroresFormulario(): string[] {
-    const errores: string[] = [];
-    Object.keys(this.form.controls).forEach(key => {
-      const control = this.form.get(key);
-      if (control && control.invalid && control.touched) {
-        const nombreCampo = this.obtenerNombreCampo(key);
-        if (control.errors?.['required']) {
-          errores.push(`- ${nombreCampo} es obligatorio`);
-        }
-        if (control.errors?.['min']) {
-          errores.push(`- ${nombreCampo} debe ser mayor o igual a 0`);
-        }
-        if (control.errors?.['pattern']) {
-          errores.push(`- ${nombreCampo} solo acepta números`);
-        }
-      }
-    });
-    return errores;
-  }
-
-  obtenerNombreCampo(key: string): string {
-    const nombres: { [key: string]: string } = {
-      'ingresosMensuales': 'Ingresos mensuales',
-      'egresosMensuales': 'Egresos mensuales',
-      'totalActivos': 'Total activos',
-      'totalPasivos': 'Total pasivos'
-    };
-    return nombres[key] || key;
-  }
-
+  // 🔒 Método para permitir solo números
   soloNumeros(event: KeyboardEvent) {
     const pattern = /^[0-9]$/;
-    if (event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' ||
-      event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      return;
-    }
-    if (!pattern.test(event.key)) {
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
       event.preventDefault();
-    }
-  }
-
-  onEnterKey(event: KeyboardEvent, siguienteCampoId: string) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      const siguienteCampo = document.getElementById(siguienteCampoId);
-      if (siguienteCampo) {
-        siguienteCampo.focus();
-      }
     }
   }
 }
+

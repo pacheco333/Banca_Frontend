@@ -2,7 +2,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 
 export interface SaldosCajerosResponse {
   success: boolean;
@@ -28,7 +27,7 @@ export interface CajeroDetalle {
   providedIn: 'root'
 })
 export class SaldosCajerosService {
-  private apiUrl = `${environment.apiUrl}/saldos`;
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/saldos'; // Misma base que saldos
 
   constructor(private http: HttpClient) {}
 

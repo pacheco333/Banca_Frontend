@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 
 export interface SaldoBovedaResponse {
   success: boolean;
@@ -13,7 +12,7 @@ export interface SaldoBovedaResponse {
   providedIn: 'root'
 })
 export class BovedaService {
-  private apiUrl = `${environment.apiUrl}/saldos`; // Misma base que saldos
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/saldos'; // Misma base que saldos
 
   constructor(private http: HttpClient) {}
 

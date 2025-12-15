@@ -10,10 +10,15 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 })
 export class ActividadEconomicaComponent implements OnInit {
   form: FormGroup;
-  @Output() formChange = new EventEmitter();
-  @Input() datosIniciales: any;
-  @Output() nextTab = new EventEmitter();
 
+  // 📤 Enviamos datos al padre al guardar (mismo nombre que en los demás módulos)
+  @Output() formChange = new EventEmitter<any>();
+  @Input() datosIniciales: any; // ← AGREGAR ESTO para modo edición
+
+  // 📤 Avisamos al padre que debe cambiar de pestaña
+  @Output() nextTab = new EventEmitter<void>();
+
+  
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       profesion: ['', [
@@ -37,7 +42,7 @@ export class ActividadEconomicaComponent implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(500)
       ]],
-      numeroEmpleados: ['', [
+      numeroEmpleados: [0, [
         Validators.required,
         Validators.min(0),
         Validators.max(999999),
@@ -46,109 +51,51 @@ export class ActividadEconomicaComponent implements OnInit {
       factaCrs: [false, Validators.required],
     });
   }
-
-  ngOnInit() {
+   ngOnInit() {
+    // ← AGREGAR ESTE MÉTODO para cargar datos iniciales
     if (this.datosIniciales) {
-      console.log('📥 Cargando datos iniciales en Actividad Económica:', this.datosIniciales);
+      console.log('📥 Cargando datos iniciales en Información Personal:', this.datosIniciales);
       this.form.patchValue(this.datosIniciales);
     }
-
-    // 🔄 AUTO-GUARDADO: Emitir datos al padre cada vez que cambie el formulario
-    this.form.valueChanges.subscribe(valores => {
-      this.formChange.emit(valores);
-      console.log('💾 Auto-guardando actividad económica...');
-    });
   }
 
-
+  // 💾 Guarda la sección y avisa al padre
   guardarSeccion() {
     if (this.form.valid) {
-      this.formChange.emit(this.form.value);
-      this.nextTab.emit();
-      alert('✅ Datos de actividad económica guardados correctamente');
+      this.formChange.emit(this.form.value); // <— cambia aquí
+      this.nextTab.emit(); // <— igual que los demás módulos
+      alert('📤 Datos de actividad económica guardados correctamente');
     } else {
       this.form.markAllAsTouched();
-      const errores = this.obtenerErroresFormulario();
-      if (errores.length > 0) {
-        alert('⚠️ Por favor corrige los siguientes errores:\n\n' + errores.join('\n'));
-      } else {
-        alert('⚠️ Por favor completa los campos obligatorios.');
-      }
+      alert('⚠️ Por favor completa los campos obligatorios.');
     }
   }
 
-  obtenerErroresFormulario(): string[] {
-    const errores: string[] = [];
-    Object.keys(this.form.controls).forEach(key => {
-      const control = this.form.get(key);
-      if (control && control.invalid && control.touched) {
-        const nombreCampo = this.obtenerNombreCampo(key);
-        if (control.errors?.['required']) {
-          errores.push(`- ${nombreCampo} es obligatorio`);
-        }
-        if (control.errors?.['minlength']) {
-          errores.push(`- ${nombreCampo} es muy corto`);
-        }
-        if (control.errors?.['pattern']) {
-          errores.push(`- ${nombreCampo} tiene un formato inválido`);
-        }
-      }
-    });
-    return errores;
-  }
-
-  obtenerNombreCampo(key: string): string {
-    const nombres: { [key: string]: string } = {
-      'profesion': 'Profesión',
-      'ocupacion': 'Ocupación',
-      'codigoCiiu': 'Código CIIU',
-      'detalleActividad': 'Detalle de actividad',
-      'numeroEmpleados': 'Número de empleados',
-      'factaCrs': 'FACTA/CRS'
-    };
-    return nombres[key] || key;
-  }
-
+  // 🔒 Método para permitir solo letras y espacios
   soloLetras(event: KeyboardEvent) {
     const pattern = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/;
-    if (event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' ||
-      event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      return;
-    }
-    if (!pattern.test(event.key)) {
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
       event.preventDefault();
     }
   }
 
+  // 🔒 Método para permitir solo números
   soloNumeros(event: KeyboardEvent) {
     const pattern = /^[0-9]$/;
-    if (event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' ||
-      event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      return;
-    }
-    if (!pattern.test(event.key)) {
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
       event.preventDefault();
     }
   }
 
+  // 🔒 Método para permitir alfanuméricos
   alfanumerico(event: KeyboardEvent) {
     const pattern = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,;:()\-]$/;
-    if (event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' ||
-      event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      return;
-    }
-    if (!pattern.test(event.key)) {
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
       event.preventDefault();
-    }
-  }
-
-  onEnterKey(event: KeyboardEvent, siguienteCampoId: string) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      const siguienteCampo = document.getElementById(siguienteCampoId);
-      if (siguienteCampo) {
-        siguienteCampo.focus();
-      }
     }
   }
 }
+

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AsesorService {
-  private apiUrl = `${environment.apiUrl}`; // Base URL del backend
+  private apiUrl = 'https://banca-backend-1.onrender.com/api'; // Ajusta si tu backend usa otro prefijo
 
   // 🧠 Estado temporal del cliente (vive en memoria)
   private clienteDataSubject = new BehaviorSubject<any>({

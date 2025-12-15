@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 
 export interface SolicitudConsulta {
   id_solicitud: number;
@@ -31,7 +30,7 @@ export interface DetalleResponse {
   providedIn: 'root'
 })
 export class ConsultarService {
-  private apiUrl = `${environment.apiUrl}/director`;
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/director';
 
   constructor(private http: HttpClient) {}
 

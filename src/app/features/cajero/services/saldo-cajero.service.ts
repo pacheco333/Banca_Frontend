@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SaldoCajeroService {
-  private apiUrl = `${environment.apiUrl}/cajero`;
+  private apiUrl = 'https://banca-backend-1.onrender.com/api/cajero';
 
   constructor(private http: HttpClient) { }
 
