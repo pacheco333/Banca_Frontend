@@ -34,7 +34,7 @@
       [class.border-blue-600]="pestanaActiva === 'facta'" 
       [class.text-gray-500]="pestanaActiva !== 'facta'"
       (click)="cambiarPestana('facta')">
-      FACTCA y CRS
+      FACTA y CRS
     </button>
   </div>
 
@@ -43,8 +43,8 @@
     <!-- Pestaña 1: Información Personal -->
     <div *ngIf="pestanaActiva === 'datos-personales'">
       <app-informacion-personal 
-        *ngIf="!cargando && datosIniciales.datosPersonales"
-        [datosIniciales]="datosIniciales.datosPersonales"
+        *ngIf="!cargando"
+        [datosIniciales]="datosIniciales.datosPersonales || {}"
         (formChange)="actualizarDatos('datosPersonales', $event)"
         (nextTab)="manejarNextTab()">
       </app-informacion-personal>
@@ -53,24 +53,24 @@
     <!-- Pestaña 2: Contacto y Actividad -->
     <div *ngIf="pestanaActiva === 'contacto-personal'" class="space-y-6">
       <app-contacto-personal 
-        *ngIf="!cargando && datosIniciales.contacto"
-        [datosIniciales]="datosIniciales.contacto"
+        *ngIf="!cargando"
+        [datosIniciales]="datosIniciales.contacto || {}"
         (formChange)="actualizarDatos('contacto', $event)">
       </app-contacto-personal>
 
       <app-actividad-economica 
-        *ngIf="!cargando && datosIniciales.actividad"
-        [datosIniciales]="datosIniciales.actividad"
+        *ngIf="!cargando"
+        [datosIniciales]="datosIniciales.actividad || {}"
         (formChange)="actualizarDatos('actividad', $event)"
         (nextTab)="manejarNextTab()">
       </app-actividad-economica>
     </div>
 
-<!-- Pestaña 3: Laboral y Financiera -->
+    <!-- Pestaña 3: Laboral y Financiera -->
     <div *ngIf="pestanaActiva === 'info-laboral'" class="space-y-6">
       <app-informacion-laboral 
-        *ngIf="!cargando && datosIniciales.laboral"
-        [datosIniciales]="datosIniciales.laboral"
+        *ngIf="!cargando"
+        [datosIniciales]="datosIniciales.laboral || {}"
         (formChange)="actualizarDatos('laboral', $event)">
       </app-informacion-laboral>
 
@@ -82,12 +82,11 @@
       </app-informacion-financiera>
     </div>
 
-
     <!-- Pestaña 4: FACTA y CRS -->
     <div *ngIf="pestanaActiva === 'facta'" class="space-y-6">
       <app-facta 
-        *ngIf="!cargando && datosIniciales.facta"
-        [datosIniciales]="datosIniciales.facta"
+        *ngIf="!cargando"
+        [datosIniciales]="datosIniciales.facta || {}"
         (formChange)="actualizarDatos('facta', $event)">
       </app-facta>
 
